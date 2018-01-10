@@ -1,0 +1,346 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage{changepage}
+
+\usepackage[]{algorithm2e}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm, fouriernc, mathtools}
+\usepackage{microtype}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{lightgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{grey}{rgb}{0.25,0.25,0.25}
+\newcommand{\blackb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\lightgreyb}{\color{lightgrey} \usefont{OT1}{lmss}{m}{n}}
+
+\let\bold\textbf
+\newcommand\comb[2][^n]{\prescript{#1\mkern-0.5mu}{}C_{#2}}
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+\sectionfont{\color{lightgrey}}
+\subsectionfont{\color{lightgrey}}
+\subsubsectionfont{\color{lightgrey}}
+
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\arabic{section}.\arabic{subsection}}
+\renewcommand\thesubsubsection{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{lightgrey}}
+{\thesection} {3pt} {} }
+
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@Aboxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\patchcmd{\@boxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\makeatother
+
+\title{\vspace{80mm}\lightgreyb Math for CS I/Discrete Mathematics \\
+\lightgreyb Assignment $6$ Solutions}
+\author{Ayush Bansal \\
+Roll No. 160177}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{claim}{Claim}[section]
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+\AfterEndEnvironment{theorem}{\noindent\ignorespaces}
+\renewcommand\thelemma{\arabic{section}.\arabic{lemma}}
+\renewcommand\theclaim{\arabic{section}.\arabic{claim}}
+
+\newenvironment{myenv}{\begin{adjustwidth}{1cm}{}}{\end{adjustwidth}}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Problem 1 Solution}{
+  \subsection{Part (a)}{
+    In this part of the question we have $2$ players $A$ and $B$ and they take turns rolling a die, they each need different value to win. \newline
+    $A$ wins with probability $\alpha$ and $B$ wins with probability $\beta$ in a certain rolling attempt. \newline
+    Let $A$ be the event that $A$ wins and $B$ be the event that $B$ wins.
+    I have to find the probability of $A$ being the winner for $2$ cases: \newline
+    \bold{A rolls first}:
+    \begin{myenv}
+      \begin{solution}
+        The series of events possible in this case are: $$ A,\overline{AB}A,\overline{ABAB}A,\overline{ABABAB}A,\dots $$
+        The probability of $A$ winning i.e. $P(A)$ is:
+        \begin{align*}
+          P(A) &= \alpha + \alpha(1-\alpha)(1-\beta) + \alpha(1-\alpha)^2(1-\beta)^2 + \dots \\
+          P(A) &= \frac{\alpha}{1-(1-\alpha)(1-\beta)} \\
+          P(A) &= \frac{\alpha}{\alpha + \beta - \alpha \beta}
+        \end{align*}
+      \end{solution}
+    \end{myenv}
+    \bold{A rolls second}:
+    \begin{myenv}
+      \begin{solution}
+        The series of events possible in this case are: $$ \overline{B}A,\overline{BAB}A,\overline{BABAB}A,\dots $$
+        The probability of $A$ winning i.e. $P(A)$ is:
+        \begin{align*}
+          P(A) &= \alpha(1-\beta) + \alpha(1-\beta)^2(1-\alpha) + \alpha(1-\beta)^3(1-\alpha)^2 + \dots \\
+          P(A) &= \frac{\alpha(1-\beta)}{1-(1-\alpha)(1-\beta)} \\
+          P(A) &= \frac{\alpha(1-\beta)}{\alpha + \beta - \alpha \beta}
+        \end{align*}
+      \end{solution}
+    \end{myenv}
+  }
+  \subsection{Part (b)}{
+    \begin{solution}
+    $2$ coins $A$ and $B$ show heads with respective probabilities $\alpha$ and $\beta$. \newline
+    They are tossed alternately such that $A$ is tossed first and I have to find the probability such that $A$ is first to show a head. \newline
+    This case is same as $$ A,\overline{AB}A,\overline{ABAB}A,\overline{ABABAB}A,\dots $$
+    here, $\overline{A}$ denotes $A$ not showing head and same applies to $\overline{B}$.
+        \begin{align*}
+          P(A) &= \alpha + \alpha(1-\alpha)(1-\beta) + \alpha(1-\alpha)^2(1-\beta)^2 + \dots \\
+          P(A) &= \frac{\alpha}{1-(1-\alpha)(1-\beta)} \\
+          P(A) &= \frac{\alpha}{\alpha + \beta - \alpha \beta}
+        \end{align*}
+      \end{solution}
+  }
+  \subsection{Part (c)}{
+    \begin{solution}
+    Consider the $2$ events as below: \newline
+    \bold{$E_1$}: Out of $3$ coin tosses, first $2$ coins result in same outcome. \newline
+    \bold{$E_2$}: Outcomes of all $3$ coin tosses are alike. \newline
+    In the argument of the problem, it is true that out of $3$ coin toss outcomes, atleast $2$ must be same and the probability that the third is a head or a tail is $\frac{1}{2}$ which is independent of other $2$. \newline
+    The mistake in the argument is assuming that the $2$ same outcomes are of the first $2$ coins. \newline
+    The probability given by the above argument is $\frac{1}{2}$ but this probability is $P(E_2 \mid E_1)$ and not $P(E_2)$. \newline
+    \begin{align*}
+      P(E_2 \mid E_1) &= \frac{P(E_2 \cap E_1)}{P(E_1)} \\
+      P(E_2 \mid E_1) &= \frac{P(E_1 \mid E_2) \cdot P(E_2)}{P(E_1)}
+    \end{align*}
+    $P(E_1) = \frac{1}{2}$, it can be trivially calculated. \newline
+    $P(E_1 \mid E_2) = 1$ as event $E_1$ lies within event $E_2$.
+    \begin{align*}
+      P(E_2) &= P(E_2 \mid E_1) \cdot P(E_1) \\
+      P(E_2) &= \frac{1}{2} \cdot \frac{1}{2} \\
+      P(E_2) &= \frac{1}{4}
+    \end{align*}
+    The above value for the event $E_2$ is the one which it should be i.e. $\frac{1}{4}$, so it is consistent with the argument I made.
+  \end{solution}
+  }
+  \subsection{Part (d)}{
+    \begin{solution}
+    There are $2$ players $A$ and $B$, $A$ flips $n+1$ fair coins and $B$ flips $n$ fair coins. \newline
+    I have to find the probability of $A$ having more heads than $B$, consider the following events: \newline
+    \bold{E}: $A$ gets more number of heads than $B$. \newline
+    \bold{F}: $A$ gets more number of tails than $B$. \newline
+    The events $E$ and $F$ are the only possible events as it is not possible for both $A$ and $B$ to have equal number of heads since they have unequal number of coins. \newline
+    If $A(heads) > B(heads)$, it will be event $E$ and if $A(heads) \leq B(heads)$, it will be event $F$ and thus, these $2$ events are exhaustive. \newline
+    Also, we will have $P(E) = P(F)$ as heads and tails can be interchanged.
+    \begin{align*}
+      P(E)+P(F)&=1 \\
+      2 \cdot P(E)&=1 \\
+      P(E) &= \frac{1}{2}
+    \end{align*}
+  \end{solution}
+  }
+}
+\newpage
+\section{Problem 2 Solution}{
+  \subsection{Part (a)}{
+    \begin{solution}
+    We have a $s$-sided fair die, it is rolled $r$ times, so the possible number of outcomes are $s^r$. \newline
+    Consider the following events: \newline
+    $E_1$: Side $1$ did not appear in the rolls. \newline
+    $E_2$: Side $2$ did not appear in the rolls. \newline
+    \vdots \newline
+    $E_s$: Side $s$ did not appear in the rolls. \newline
+    Probability that atleast $1$ side of the side does not show in the $r$ rolls is $P(E_1 \cup E_2 \cup \dots \cup E_s)$. \newline
+    \begin{align*}
+      P(E_1 \cup E_2 \cup \dots \cup E_s) &= \frac{\binom{s}{1}(s-1)^r - \binom{s}{2}(s-2)^r \dots (-1)^{s-2} \binom{s}{s-1}(s-s+1)^r}{s^r} \\
+      P(E_1 \cup E_2 \cup \dots \cup E_s) &= \frac{\sum_{i=1}^{s-1} (-1)^{i-1} \binom{s}{i} (s-i)^r}{s^r}
+    \end{align*}
+  The probability $p$ that each side has turned up atleast once if it was rolled $r$ times.
+  \begin{align*}
+    p &= 1 - P(E_1 \cup E_2 \cup \dots \cup E_s) \\
+    p &= \frac{s^r - \sum_{i=1}^{s-1} (-1)^{i-1} \binom{s}{i} (s-i)^r}{s^r} \\
+    p &= \frac{\sum_{i=0}^{s} (-1)^i \binom{s}{i} (s-i)^r}{s^r}
+  \end{align*}
+  \end{solution}
+  }
+  \subsection{Part (b)}{
+    \begin{solution}
+    Assuming there are $365$ days in the year of people's birthdays for calculation, even if it is $366$ the final answer will not change. \newline
+    Let $n$ be the number of students who have announced their birthdays before you, we have:
+    \begin{align*}
+      P(n=0) &= 0 \\
+      P(n=1) &= \frac{365}{365} \cdot \frac{1}{365} \\
+      P(n=2) &= \frac{365}{365} \cdot \frac{364}{365} \cdot \frac{2}{365} \\
+      P(n) &= \frac{\binom{365}{n}n!\binom{n}{1}}{365^{n+1}}
+    \end{align*}
+    I have to find out max value of $P(n)$, it will increase with increasing $n$ till a specific value and then it will keep on decreasing. \newline
+    \begin{align*}
+      P(n+1) &< P(n) \\
+      \frac{\binom{365}{n+1}(n+1)!\binom{n+1}{1}}{365^{n+2}} &< \frac{\binom{365}{n}n!\binom{n}{1}}{365^{n+1}} \\
+      (365-n)(n+1) &< 365n \\
+      n^2+n-365 &> 0
+    \end{align*}
+    The above equation is valid for $n > 18.611$, so using the first integer value, the \bold{maxima} will occur at $n=19$. \newline
+    So, the max probability of winning the prize will be when $19$ students before you have announced their birthday. \newline
+    So, state your birthday at $20^{th}$ place and you will have best probability of winning.
+  \end{solution}
+  }
+}
+\newpage
+\section{Problem 3 Solution}{
+  $X$ has a mass function $f(x)$, i.e. $f(x)=P(X=x)$.
+  \begin{align*}
+    \Omega &= \{ \omega_1,\omega_2,\dots,\omega_n \} \\
+    X &= \{ x_1,x_2,\dots,x_m \} \\ 
+    P(X=x_i) &= P(\omega_j \mid \omega_j \in \Omega, X(\omega_j)=x_i)
+  \end{align*}
+  Using the above definitions of the mass function and probability of $X$, I will find the mass function for the given sets of $X'$ in the following parts.
+  \subsection{Part (a)}{
+    \begin{solution}
+      Consider the mass function for $-X$ to be $g(x)$. \newline
+      We will have $g(x)=P(-X=x)$ or $g(x)=P(X=-x)$. \newline
+      Thus, the function $g(x)$ is: $$ g(x)=f(-x) $$
+    \end{solution}
+  }
+  \subsection{Part (b)}{
+    \begin{solution}
+      Consider the mass function for $X^+=max(0,X)$ to be $g(x)$. \newline
+      $X^+$ will have only non-negative values of $x$ and all the negative values will result in zero, so the final function will be as below.
+    \[
+      g(x)=
+      \begin{cases}
+        f(x), &\text{ $x > 0$} \\
+        \sum_{x \leq 0} f(x), &\text{ $x=0$} \\
+        0, &\text{ $x<0$}
+      \end{cases}
+    \]
+   \end{solution}
+  }
+  \subsection{Part (c)}{
+    \begin{solution}
+      Consider the mass function for $X^-=max(0,-X)$ to be $g(x)$. \newline
+      $X^-$ will have only non-negative values of $x$ and all the positive values will result in zero as it is $-X$, so the final function will be as below.
+    \[
+      g(x)=
+      \begin{cases}
+        f(-x), &\text{ $x > 0$} \\
+        \sum_{x \leq 0} f(-x), &\text{ $x=0$} \\
+        0, &\text{ $x<0$}
+      \end{cases}
+    \]
+   \end{solution}
+  }
+  \subsection{Part (d)}{
+    \begin{solution}
+      Consider the mass function for $\mid X \mid = X^+ + X^-$ to be $g(x)$. \newline
+      $\mid X \mid$ will have only non-negative values of $x$ and all the values will be result of $X$ and $-X$, so the final function will be as below.
+    \[
+      g(x)=
+      \begin{cases}
+        f(-x) + f(x), &\text{ $x > 0$} \\
+        f(0), &\text{ $x=0$} \\
+        0, &\text{ $x<0$}
+      \end{cases}
+    \]
+    \end{solution}
+  }
+  \subsection{Part (e)}{
+    \begin{solution}
+      Consider the mass function to be $g(x)$ for:
+      \[
+        sgn(X)=
+        \begin{cases}
+          \frac{X}{\mid X \mid}, &\text{$X \neq 0$} \\
+          0, &\text{$X=0$}
+        \end{cases}
+      \]
+      $sgn(X)$ will have only $3$ values of $x=\{-1,0,1\}$ i.e. all negative values will result in $-1$ and all positive values will result in $1$, so the final function will be as below.
+    \[
+      g(x)=
+      \begin{cases}
+        \sum_{x < 0} f(x), &\text{ $x = -1$} \\
+        f(0), &\text{ $x=0$} \\
+        \sum_{x > 0} f(x), &\text{ $x = 1$} \\
+        0, &\text{ otherwise.}
+      \end{cases}
+    \]
+    \end{solution}
+
+  }
+}
+\newpage
+\section{Problem 4 Solution}{
+  \subsection{Part (a)}{
+    The probability mass function is $f(x) = P(X=x)$ by definition and $x$ here is the number on the card, since the box contains $n$ cards numbered from $1$ to $n$ and one is picked at random. \newline
+    So the following will be the probability mass function:
+    \[
+      f(x)=
+      \begin{cases}
+        \frac{1}{n}, &\text{if $x=\{1,2,\dots,n\}$;} \\
+        0, &\text{otherwise.}
+      \end{cases}
+    \]
+    \begin{solution}
+    I have to find the value of $E[X]$ which is also called the mean expectation value.
+    \begin{align*}
+      E[X] &= \sum_{x=1}^{n} x \cdot f(x) \\
+      E[X] &= \frac{1}{n}\sum_{x=1}^{n} x \\
+      E[X] &= \frac{1}{n} \cdot \frac{n(n+1)}{2} \\
+      E[X] &= \frac{n+1}{2}
+    \end{align*}
+  \end{solution}
+  \begin{solution}
+  I have to find the value of $E[X^2]$ which is also called the second moment.
+  \begin{align*}
+    E[X^2] &= \sum_{x=1}^{n} x^2 \cdot f(x) \\
+    E[X^2] &= \frac{1}{n} \sum_{x=1}^{n} x^2 \\
+    E[X^2] &= \frac{1}{n} \cdot \frac{n(n+1)(2n+1)}{6} \\
+    E[X^2] &= \frac{(n+1)(2n+1)}{6}
+  \end{align*}
+  \end{solution}
+  \begin{solution}
+    I have to find the value of second central moment which is also called variance. \newline
+    The second central moment is $E[(X-E[X])^2]=E[X^2]-(E[X])^2$.
+    \begin{align*}
+      E[(X-E[X])^2] &= E[X^2]-(E[X])^2 \\
+      E[(X-E[X])^2] &= \frac{(n+1)(2n+1)}{6} - \left( \frac{n+1}{2} \right)^2 \\
+      E[(X-E[X])^2] &= \frac{n^2-1}{12}
+    \end{align*}
+  \end{solution}
+  }
+  \subsection{Part (b)}{
+    Assuming $E[X]$ exists, I have to prove that: $$ (E[X])^2 \leq (E[\mid X \mid])^2 \leq E[X^2] $$
+    \begin{proof}
+      We know that $x \leq \mid x \mid$. \newline
+      Multiplying the above equation by a non-negative number will not change the validity of the inequality and we know that $p(x) \geq 0$, so multiply by it. \newline
+      We get $x \cdot p(x) \leq \mid x \mid p(x)$, since it is valid for every value of $x$, we can do summation of it and still the inequality will be valid.
+      \begin{align*}
+        x \cdot p(x) &\leq \mid x \mid \cdot p(x) \\
+        \sum x \cdot p(x) &\leq \sum \mid x \mid \cdot p(x) \\
+        \left( \sum x \cdot p(x) \right)^2 &\leq \left( \sum \mid x \mid \cdot p(x) \right)^2 \\
+        (E[X])^2 &\leq (E[\mid X \mid])^2
+      \end{align*}
+      By definition of variance for absolute $x$ which is: $$ Var[\mid X \mid] = \sum (\mid x \mid - E[\mid X \mid])^2 \cdot p(\mid x \mid) $$
+      It is clear from above that $Var[\mid X \mid] \geq 0$.
+      \begin{align*}
+        E[X^2] &- (E[\mid X \mid])^2 \geq 0 \\
+        E[X^2] &\geq (E[\mid X \mid])^2
+      \end{align*}
+      By above equations, I have proved the required result for a discrete random variable. $$ (E[X])^2 \leq (E[\mid X \mid])^2 \leq E[X^2] $$
+      For proving the result for a continuous random variable we can combine the above arguments with \bold{Riemann Integral Hypothesis} i.e. breaking integral into summation of small strips.
+    \end{proof}
+  }
+}
+\end{document}

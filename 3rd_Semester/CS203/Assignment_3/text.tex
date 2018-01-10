@@ -1,0 +1,132 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage{changepage}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm, fouriernc, mathtools}
+\usepackage{microtype}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{lightgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{grey}{rgb}{0.25,0.25,0.25}
+\newcommand{\blackb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\lightgreyb}{\color{lightgrey} \usefont{OT1}{lmss}{m}{n}}
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+\sectionfont{\color{lightgrey}}
+\subsectionfont{\color{lightgrey}}
+
+\renewcommand\thesection{\arabic{section}.}
+\renewcommand\thesubsection{\thesection\arabic{subsection}}
+
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{lightgrey}}
+{\thesection} {3pt} {} }
+
+\renewcommand{\theequation}{\thesection\arabic{equation}}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@Aboxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\patchcmd{\@boxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\makeatother
+
+\title{\vspace{80mm}\lightgreyb CS203: Abstract Algebra \\
+\lightgreyb Assignment $3$ Solutions}
+\author{Ayush Bansal}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+\AfterEndEnvironment{theorem}{\noindent\ignorespaces}
+
+\newenvironment{myenv}{\begin{adjustwidth}{1cm}{}}{\end{adjustwidth}}
+
+\begin{document}
+\setcounter{page}{4}
+\setcounter{section}{1}
+\setcounter{lemma}{3}
+\section{Problem 2 Solution}{
+  \setcounter{subsection}{2}
+  \setcounter{equation}{5}
+  \subsection{Part 3.}{
+    Consider a prime number $p$ of the form $4n+1$, $p$ is prime in $\mathbb{Z}$.
+    \begin{lemma}
+      $p$ is not prime in $\mathbb{Z}[i]$ if $p$ is of the form $4n+1$.
+    \end{lemma}
+    \begin{proof}
+    Since $p$ is of the form $4n+1$, by (2.5) we have some $x$ such that $(x^2+1)modp=0$, or we can say that $x^2+1=kp,k \in \mathbb{N}$. \newline
+    Now assume $p$ is a prime number in $\mathbb{Z}[i]$. \newline
+    We can write $x^2+1=(x+i)(x-i)$ and since $p \mid x^2+1$, by definition of prime in $\mathbb{Z}[i]$, $p \mid x+i$ or $p \mid x-i$. \newline
+    \textbf{Case 1.} $p \mid x+i$
+    \begin{myenv}
+      Since $p \mid x+i$, $\frac{x}{p}+\frac{i}{p} \in \mathbb{Z}[i]$ but since we know that $i$ is a unit in $\mathbb{Z}[i]$, $\frac{i}{p} \notin \mathbb{Z}[i]$, thus our statement is a \textbf{Contradiction}.
+    \end{myenv}
+    \textbf{Case 2.} $p \mid x-i$
+    \begin{myenv}
+      Same argument as that of \textbf{Case 1}.
+    \end{myenv}
+    By above 2 cases, our lemma is proved.
+    \end{proof}
+    Now we will prove that there exists integers $x,y$ and $c$ such that $x^2+y^2=cp$ and $gcd(c,p)=1$.
+    \begin{proof}
+      Since we have proved that $p$ is not a prime in $\mathbb{Z}[i]$, we consider that it is product of 2 numbers from $\mathbb{Z}[i]$. \newline
+      Let $p=(x+iy)(a+ib)$, doing computations on it and equating imaginary part to $0$, we get:
+      \begin{align}
+        p&=(ax-by)+i(ay+bx) \label{eq:6} \\
+        ay+bx&=0 \\
+        \frac{a}{b}&=-\frac{x}{y} \\
+        kp&=x^2+y^2, k=\frac{x}{a}
+      \end{align}
+      Putting $k=1$ in the above equation, we get $p*1=x^2+y^2, x,y \in \mathbb{Z}$ and $gcd(1,p)=1$ and so the proof is complete
+    \end{proof}
+  }
+  \subsection{Part 4.}{
+    We are given that $p$ is prime number such that $x^2+y^2=cp$, where $x,y$ and $c$ are integers and $gcd(c,p)=1$. \newline
+    I have to prove that $p$ is not a prime in $\mathbb{Z}[i]$. \newline
+    \begin{proof}
+      Assume that $p$ is a prime in $\mathbb{Z}[i]$. \newline
+      Since $cp=x^2+y^2$, we can write it as $cp=(x+iy)(x-iy)$, since $p \mid (x+iy)(x-iy)$, by definition of prime in $\mathbb{Z}[i]$, either $p \mid (x+iy)$ or $p \mid (x-iy)$. \newline
+      Considering either of the both cases we get that $\frac{x}{p},\frac{y}{p} \in \mathbb{Z}[i]$ and since $x,y \in \mathbb{Z}$, also units of $\mathbb{Z}[i]$ are $\pm1,\pm i$, and $p \mid x$ and $p \mid y$. \newline
+      Using above result, $x=ap$ and $y=bp$, $a,b \in \mathbb{Z}$, putting these values in our original equation we get:
+      \begin{align}
+        cp=b^2p^2+a^2p^2 \label{eq:10} \\
+        c=p(b^2+a^2)
+      \end{align}
+      Since equation (2.11) is a \textbf{Contradiction} to the fact that $gcd(c,p)=1$, thus $p$ is not a prime in $\mathbb{Z}[i]$.
+    \end{proof}
+  }
+  \subsection{Part 5.}{
+    We are given a prime number $p$ which is prime in $\mathbb{Z}$ but not in $\mathbb{Z}[i]$. \newline
+    I have to prove that $p=a^2+b^2$ and $a,b \in \mathbb{Z}$.
+    \begin{proof}
+      Since $p$ is not a prime in $\mathbb{Z}[i]$, we can write $p$ as $p=(a+ib)(x+iy)$, where $a,b,x,y$ are integers. \newline
+      Now doing the same computations done in (2.6),(2.7),(2.8) and (2.9), putting $k=1$, we get:
+      \begin{align*}
+        p=x^2+y^2, \quad x,y \in \mathbb{Z}
+      \end{align*}
+      The above equation is the one which I had to prove and so my proof is complete.
+    \end{proof}
+  }
+  \subsection{Part 6.}{
+    We are given that $p$ is a prime number in $\mathbb{Z}$ and is of the form $4n+1$. \newline
+    I have to prove that $p=a^2+b^2$, where $a,b \in \mathbb{Z}$.
+    \begin{proof}
+      Using \textbf{Lemma 4}, we can say that since $p$ is of the form $4n+1$, $p$ will not be a prime in $\mathbb{Z}[i]$. \newline
+      Since $p$ is not a prime in $\mathbb{Z}[i]$, from the proof of \textbf{2.5 Part 5.} we can say that $p=a^2+b^2$ for some integers $a$ and $b$, which concludes our proof.
+    \end{proof}
+  }
+}
+\newpage
+\end{document}

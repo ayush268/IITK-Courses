@@ -1,0 +1,176 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage{changepage}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm, fouriernc, mathtools}
+\usepackage{microtype}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{lightgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{grey}{rgb}{0.25,0.25,0.25}
+\newcommand{\blackb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\lightgreyb}{\color{lightgrey} \usefont{OT1}{lmss}{m}{n}}
+
+\let\bold\textbf
+\newcommand\comb[2][^n]{\prescript{#1\mkern-0.5mu}{}C_{#2}}
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+\sectionfont{\color{lightgrey}}
+\subsectionfont{\color{lightgrey}}
+\subsubsectionfont{\color{lightgrey}}
+
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\arabic{section}.\arabic{subsection}}
+\renewcommand\thesubsubsection{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{lightgrey}}
+{\thesection} {3pt} {} }
+
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@Aboxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\patchcmd{\@boxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\makeatother
+
+\title{\vspace{80mm}\lightgreyb Abstract Algebra \\
+\lightgreyb Assignment $5$ Solutions}
+\author{Ayush Bansal \\
+Roll No. 160177}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{claim}{Claim}[section]
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+\AfterEndEnvironment{theorem}{\noindent\ignorespaces}
+\renewcommand\thelemma{\arabic{section}.\arabic{lemma}}
+\renewcommand\theclaim{\arabic{section}.\arabic{claim}}
+
+\newenvironment{myenv}{\begin{adjustwidth}{1cm}{}}{\end{adjustwidth}}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Problem 1 Solution}{
+  We are given a curve $C(x,y)=0$, $C(x,y) \in \mathbb{Q}[x,y]$ and it is parameterized by rational functions $f,g \in \mathbb{Q}(t)$ where $\mathbb{Q}(t)$ is a field and $\mathbb{Q}[x,y]$ is a ring. \newline
+  \begin{claim}
+    There is a ring homomorphism from ring $\mathbb{Q}[x,y]$ to field $\mathbb{Q}(t)$, $A(x,y) \mapsto A(f(t),g(t))$
+  \end{claim}
+  \begin{proof}
+    Assume a mapping $\phi : \mathbb{Q}[x,y] \mapsto \mathbb{Q}(t)$ such that $\phi (x)=f(t)$ and $\phi (y)=g(t)$. \newline
+    Since $x=f(t)$ and $y=g(t)$ which is the result of the parametrization done on $C(x,y)$ and $f(t),g(t)$ are rational functions, so
+    \begin{align}
+      ax+by&=af(t)+bg(t) \label{eq:1} \\
+      ax^n&=a(f(t))^n \\
+      x^my^n&=(f(t))^m(g(t))^n
+    \end{align}
+    Since $A(x,y) \in \mathbb{Q}[x,y]$ is a polynomial in $x,y$ we know that it will have combination of integral powers of $x$ and $y$ with constants, so by (1.1), (1.2), (1.3) and mapping of $\phi$ we have the following equations.
+    \begin{align}
+      \phi(A(x,y))=A(\phi(x),\phi(y)) \label{eq:4}
+    \end{align}
+    Since we know that sum or product of any polynomials in $\mathbb{Q}[x,y]$ will also be a polynomial as it is a ring and it has \bold{closure} property.
+    \begin{align}
+      \phi(A_1(x,y)+A_2(x,y))&=A_1(\phi(x),\phi(y))+A_2(\phi(x),\phi(y)) \label{eq:5} \\
+      \phi(A_1(x,y)+A_2(x,y))&=\phi(A_1)+\phi(A_2) \\
+      \phi(A_1(x,y)*A_2(x,y))&=A_1(\phi(x),\phi(y))*A_2(\phi(x),\phi(y)) \\
+      \phi(A_1(x,y)*A_2(x,y))&=\phi(A_1(x,y))*\phi(A_2(x,y))
+    \end{align}
+    By above properties ring homomorphism is satisfied as $A(\phi(x),\phi(y))=A(f(t),g(t))$, where $A(f(t),g(t))$ is a rational function in $\mathbb{Q}(t)$ as all the coefficients of polynomial $A(x,y)$ are rational numbers and putting $x=f(t),y=g(t)$ where $f,g$ are rational functions, we will finally get a rational function $A(f(t),g(t))$.
+  \end{proof}
+    \begin{claim}
+      $Kernel(\phi)$ contains ideal $(C(x,y))$ i.e. principal ideal of $C(x,y)$.
+    \end{claim}
+    \begin{proof}
+    Now, we will find the elements of the set \bold{kernel($\phi$)}, it is defined as.
+    \begin{align}
+      kernel(\phi)&=\{A(x,y) \mid A(x,y) \in \mathbb{Q}[x,y], \phi(A(x,y))=0\} \label{eq:9} \\
+      \phi(A(x,y))&=A(f(t),g(t))=0
+    \end{align}
+    By equation (1.10), we can see that the curve $C(x,y)=0$ where $x=f(t),y=g(t)$ belongs to $kernel(\phi)$. Also, $kernel(\phi)$ is an ideal we can verify that. \newline
+    If $A(f(t),g(t))=0$ and $B(f(t),g(t))=0$, then $(A+B)(f(t),g(t))=0$ then $(A+B)(f(t),g(t)) \in kernel(\phi)$, also if $A(f(t),g(t))=0$ then $A(f(t),g(t))*B(x,y)=0,B(x,y) \in \mathbb{Q}[x,y]$ then $A(f(t),g(t))*B(x,y) \in kernel(\phi)$. \newline
+    Since $C(x,y) \in kernel(\phi)$ then $(C(x,y)) \in kernel(\phi)$ where $(C(x,y))$ is the principal ideal of $C(x,y)$.
+  \end{proof}
+}
+\newpage
+\section{Problem 2 Solution}{
+  We are given a ring homomorphism $\phi: \mathbb{Q}[x,y] \mapsto \mathbb{Q}(t)$.
+  \begin{claim}
+    $Kernel(\phi)$ is a \bold{prime ideal}.
+  \end{claim}
+  \begin{proof}
+  By the definition of $kernel(\phi)$, we have
+  \begin{align}
+    kernel(\phi)&=\{A(x,y) \mid A(x,y) \in \mathbb{Q}[x,y], \phi(A(x,y))=0\} \label{eq:1}
+  \end{align}
+  By proof of \bold{Claim 1.2}, $kernel(\phi)$ is an \bold{ideal}. \newline
+  Assume polynomial $A(x,y)*B(x,y)\in kernel(\phi)$ where $A(x,y),B(x,y)\in \mathbb{Q}[x,y]$ then we have $\phi(A(x,y)*B(x,y))=0$, so we have $\phi(A(x,y))*\phi(B(x,y))=0$ which implies either $\phi(A(x,y))=0$ or $\phi(B(x,y))=0$ i.e. $A(x,y) \in kernel(\phi)$ or $B(x,y) \in kernel(\phi)$. \newline
+  The above statement implies that $kernel(\phi)$ is a \bold{prime ideal}.
+  \end{proof}
+  \begin{claim}
+    An \bold{algebraic set} $V$ is irreducible if $I(V)$ is a prime ideal.
+  \end{claim}
+  \begin{proof}
+    I will prove the above claim by \bold{contradiction}. Consider $V=V_1 \cup V_2$ is reducible. \newline
+    Then, $V_i \varsubsetneq V$ implies $I(V_i) \varsupsetneq I(V)$ for each $i$. \newline
+    Let $F_i \in I(V_i)\backslash I(V)$, then $F_i \notin I(V)$ for each $i$, but $F_1F_2 \in I(V)$ since for all $P \in V$, either $F_1(P)=0$ or $F_2(P)=0$. Thus, $I(V)$ is not prime which is a \bold{contradiction}.
+  \end{proof}
+  \begin{claim}
+    $Kernel(\phi)$ is \bold{principal ideal} i.e. $kernel(\phi)=(C(x,y)),C(x,y)\in \mathbb{Q}[x,y]$.
+  \end{claim}
+  \begin{proof}
+    I have already proved that $kernel(\phi)$ is a \bold{prime ideal}, also by the proof of \bold{Claim 1.2}, we can see that ideal $kernel(\phi)$ contains principal ideal $(C(x,y))$ and also since the ideal $kernel(\phi)$ is \bold{prime ideal}, $\exists A(x,y) \in \mathbb{Q}[x,y]$ such that $A(x,y)$ is an \bold{irreducible curve} by \bold{Claim 2.2} and $C(x,y)$ is either equal to $A(x,y)$ or it is a multiple of $A(x,y)$. \newline
+    $A(x,y)\in \mathbb{Q}[x,y]$ is an irreducible curve as $kernel(\phi)$ is a \bold{prime ideal} and it will map to an algebraic set $V$ which is the algebraic set of $A(x,y) \in \mathbb{Q}[x,y]$. \newline
+    So, by above arguments we can say that $kernel(\phi)=(A(x,y)),A(x,y)\in \mathbb{Q}[x,y]$ as the ideal $kernel(\phi)$ will be the ideal which will be an ideal of algebraic set which will be irreducible.
+  \end{proof}
+}
+\newpage
+\section{Problem 3 Solution}{
+  We are given a map $\phi(x)=\frac{2t}{t^2+1}$ and $\phi(y)=\frac{t^2-1}{t^2+1}$ and a field of fractions $F=\mathbb{Q}[x,y]/(x^2+y^2-1)$ and field $\mathbb{Q}(t)$.
+  \begin{claim}
+    $\phi$ is an \bold{isomorphism} from $F$ to $\mathbb{Q}(t)$.
+  \end{claim}
+  \begin{proof}
+    We are given a map $\phi(x)=\frac{2t}{t^2+1}$ and $\phi(y)=\frac{t^2-1}{t^2+1}$, rearranging this we have.
+    \begin{align}
+      t=\frac{2(1+\phi(y))}{\phi(x)} \label{eq:1}
+    \end{align}
+    From the proof of \bold{Claim 1.1}, we have.
+    \begin{align}
+      \phi\Bigg(\frac{A(x,y)}{B(x,y)}\Bigg)=\frac{\phi(A(x,y))}{\phi(B(x,y))}=\frac{A(\phi(x),\phi(y))}{B(\phi(x),\phi(y))} \label{eq:2}
+    \end{align}
+    Calculating the value of $\phi(x^2+y^2-1)$.
+    \begin{align}
+      \phi(x^2+y^2-1)=(\phi(x))^2+(\phi(y))^2-1 \label{eq:3} \\
+      \Bigg(\frac{2t}{t^2+1}\Bigg)^2+\Bigg(\frac{t^2-1}{t^2+1}\Bigg)^2-1=0
+    \end{align}
+    So $\forall C(x,y) \in I,\phi(C(x,y))=0$, as every polynomial in $I$ will just be a multiple of $x^2+y^2-1$ as it is a principal ideal, and applying the homomorphism to field $F$.
+    \begin{align}
+      \phi\Bigg(\frac{A(x,y)+I}{B(x,y)+I}\Bigg)=\frac{\phi(A(x,y))}{\phi(B(x,y))}=\frac{A(\phi(x),\phi(y))}{B(\phi(x),\phi(y))} \label{eq:5}
+    \end{align}
+    Considering equation (3.1), there is a value $(x,y) \forall t$ by the mapping $\phi(x)=\frac{2t}{t^2+1}$ and $\phi(y)=\frac{t^2-1}{t^2+1}$, thus homomorphism is \bold{onto} as every $t$ is mapped to $(\phi(x),\phi(y))$ and thus every possible function in the field $\mathbb{Q}(t)$ is mapped to a function in field $F$. \newline
+    We know that a field has only $2$ ideals which are $\{0\}$ and $(1)$ i.e. \bold{zero ideal} and $\bold{F-\{0\}}$, and since $kernel(\phi)=\{0\}$. \newline
+    If we assume $A \ne B$ where $A,B \in F$ but $\phi(A)=\phi(B)$, also if we have $\phi(X)=0$, then $X=0$ as $kernel(\phi)=\{0\}$.
+    \begin{align}
+      \phi(A-B)=\phi(A)-\phi(B)=0 \label{eq:6} \\
+      A-B=0 \Rightarrow A=B
+    \end{align}
+    The above statement is a contradiction to our assumption, thus we have a unique mapping, also by equation (3.1), we can see that homomorphism of field $F$ to $\mathbb{Q}(t)$ is \bold{1-1}. \newline
+    Now as we have shown the homomorphism is \bold{1-1} and \bold{onto}, the homomorphism is an \bold{isomorphism}.
+  \end{proof}
+\end{document}

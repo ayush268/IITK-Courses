@@ -1,0 +1,413 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage{changepage}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm, fouriernc, mathtools}
+\usepackage{microtype}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{lightgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{grey}{rgb}{0.25,0.25,0.25}
+\newcommand{\blackb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\lightgreyb}{\color{lightgrey} \usefont{OT1}{lmss}{m}{n}}
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+\sectionfont{\color{lightgrey}}
+\subsectionfont{\color{lightgrey}}
+
+\renewcommand\thesection{\arabic{section}.}
+\renewcommand\thesubsection{\thesection\arabic{subsection}}
+
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{lightgrey}}
+{\thesection} {3pt} {} }
+
+\renewcommand{\theequation}{\thesection\arabic{equation}}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@Aboxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\patchcmd{\@boxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\makeatother
+
+\title{\vspace{80mm}\lightgreyb CS201A: Math for CS I/Discrete Mathematics \\
+\lightgreyb Assignment $1$ Solution}
+\author{Ayush Bansal}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}[conjecture]
+
+\newenvironment{myenv}{\begin{adjustwidth}{1cm}{}}{\end{adjustwidth}}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Problem 1 Solution}{
+    \subsection{Part (a)}{
+        Following result is assumed for p (prime number) in the problem:
+        \begin{align}
+          p \mid m^2 \label{eq:1}
+        \end{align}
+        We will be proving the following result:
+        \begin{align}
+          \Aboxed{p \mid m \quad,\, m \in \mathbb{Z}} \label{eq:2}
+        \end{align}
+        \begin{proof}
+          Lets assume:
+          \begin{align}
+            p \nmid m \label{eq:3}
+          \end{align}
+          We are going to use the following:
+          \begin{theorem}[GCD is a Linear Combination]
+          For any non-zero integers $a$ and $b$, there exist integers $s$ and $t$ such that $gcd(a,b)=as+bt$. Moreover, $gcd(a,b)$ is the smallest positive integer of the form $as+bt$.
+        \end{theorem}
+          \begin{corollary}
+          If $a$ and $b$ are relatively prime, then there exist integers $s$ and $t$ such that $as+bt=1$
+        \end{corollary}
+          Since $p$ is a prime number and does not divide $m$ (1.3), we get the following:
+          \begin{align*}
+            ps+mt=1 \label{eq:4}
+          \end{align*}
+          Multiplying the above equation by $m$
+          \begin{align*}
+            pms+m^2t=m
+          \end{align*}
+          The \textbf{LHS} is divisble by $p$ by using (1.1), thus \textbf{RHS} must also be divisible by $p$ which yields:
+          \begin{align*}
+            p \mid m
+          \end{align*}
+          The above equation is a \textbf{Contradiction} to (1.3) and thus proves our result (1.2).
+        \end{proof}
+    }
+    \subsection{Part (b)}{
+      In the above part $p$ was a prime number but now we consider $p$ as a composite number.
+      \begin{proof}
+        Lets assume (1.3) again, only this time $p$ is composite.
+        This time, $gcd(p,m)=1$ will not always be true.
+        Lets assume:
+        \begin{align*}
+          gcd(p,m)=b \quad,\, b \in \mathbb{N}
+        \end{align*}
+        Using \textbf{Theorem 1} and multiplying by m:
+        \begin{align*}
+          ps+mt&=b \\
+          pms+m^2t&=mb
+        \end{align*}
+        Since \textbf{LHS} is divisible by $p$, \textbf{RHS} is divisible by $p$ which yields:
+        \begin{align*}
+          p \mid mb
+        \end{align*}
+        But the above equation simplifies to $p \mid m$ only when $b=1$ which is not always true. Thus in case of $p$ being a composite number, above equation doesn't necessarily hold.
+      \end{proof}
+    }
+    \subsection{Part (c)}{
+      For a prime number $p$, we will be proving:
+      \begin{align*}
+        \Aboxed{\sqrt{p} \quad is \quad irrational}
+      \end{align*}
+      \begin{proof}
+      Lets assume that $p$ is a rational number which gives:
+      \begin{align}
+      \sqrt{p}=\frac{a}{b} \quad where \quad gcd(a,b)=1 ,\, \quad a,b \in \mathbb{Z} ,\, b \ne 0 
+      \end{align}
+      Squaring both sides and multiplying by $b$:
+      \begin{align}
+        b^2p=a^2 \label{eq:5}
+      \end{align}
+      The \textbf{LHS} is divisible by $p$, thus:
+      \begin{align}
+        p \mid a^2 \label{eq:6} \\
+        p \mid a \quad,\, by \quad (a) \label{eq:7}
+      \end{align}
+      The above can be rewritten as following:
+      \begin{align*}
+        a&=kp \quad,\, k \in \mathbb{Z} \\
+        b^2p&=k^2p^2 \\
+        b^2&=k^2p
+      \end{align*}
+      By the similar arguments made for $a$ we get:
+      \begin{align}
+        p \mid b \label{eq:8}
+      \end{align}
+      Using (1.7) and (1.8), we can see that $gcd(a,b)=p$ which is \textbf{Contradiction} to (1.4) and proves our result.
+      \end{proof} 
+    }
+}
+
+\section{Problem 2 Solution}{
+  \subsection{Part (a)}{
+    We are given a polynomial with real number $x$ as the solution:
+    \begin{align}
+      x^n+c_1x^{n-1}+\dots+c_{n-1}x+c_n=0 \quad ,\, c_i,i=1..n \in \mathbb{Z} \label{eq:1}
+    \end{align}
+    The result we have to prove is:
+    \begin{align}
+      \Aboxed{x \in \mathbb{Z} \quad \vee \quad x \notin \mathbb{Q}} \label{eq:2}
+    \end{align}
+    \begin{proof}
+      Lets assume x to be rational number, thus from (1.4)
+      \begin{align*}
+        x=\frac{a}{b}
+      \end{align*}
+      Putting value in (2.1) and multiplying equation by $b^n$:
+      \begin{align}
+        a^n+c_1a^{n-1}b+\dots+c_{n-1}ab^{n-1}+c_nb^n=0 \label{eq:3}
+      \end{align}
+      In (2.3), \textbf{RHS} is divisible by $b$, thus \textbf{LHS} must be divisible by $b$, and we get this final result after taking modular of LHS:
+      \begin{align}
+        b \mid a^n \label{eq:4}
+      \end{align}
+      \begin{theorem}[Fundamental Theorem of Arithmetic]
+        Every integer greater than $1$ is a prime or a product of primes. This product is unique, except for the order in which the factors appear. That is, if $n=p_1p_2..p_r$ and $n=q_1q_2..q_s$, where $p's$ and $q's$ are primes, then $r=s$ and, after renumbering the $q's$, we have $p_i=q_i$ for all $i$.
+      \end{theorem}
+      By (2.4) we can see that, $gcd(a^n,b)=b$ and now 2 cases are possible, \newline
+      \textbf{Case 1} ($b=1$) In this case $x$ will be an integer. \newline
+      \textbf{Case 2} ($b\ne1$) In this case there will be 2 more sub-cases: \newline
+      \begin{myenv}
+         \textbf{Sub-Case 1} ($a^n=k^n ,\, k \in \mathbb{Z}$) \quad In this case (where $a$ is $n^{th}$ power of some integer), using \textbf{Theorem 2} we can say that the integer $k$ and $b$ is a multiple of one or more prime numbers such that $gcd(k^n,b)=b$ and we can state that there must a prime factor common between $k$ and $b$ which shows that $gcd(a,b)\ne1$ and this proves $x$ to be irrational by Part (b) for Problem 1. \newline
+        \textbf{Sub-Case 2} ($a^n \ne k^n ,\, k \in \mathbb{Z}$) \quad In this case, there is no integer $k=\sqrt[\leftroot{-3}\uproot{3}n]{a^n}$ and thus by using \textbf{Theorem 2} we can state that it is not possible to express $\sqrt[\leftroot{-3}\uproot{3}n]{a^n}$ as a product of primes since it is not an integer which means $a \notin \mathbb{Z}$, thus it is again a \textbf{Contradiction} to (1.4) which states $a$ must be an integer. Thus $x$ must be irrational. \newline
+      \end{myenv}
+    \end{proof}
+  }
+  \subsection{Part (b)}{
+    We are given a positive integer $m$ such that:
+    \begin{align*}
+      m \ne k^n \quad,\, k \in \mathbb{N}
+    \end{align*}
+    \begin{proof}
+    Lets assume that $\sqrt[\leftroot{-3}\uproot{3}n]{m}$ is rational, then by (1.4):
+    \begin{align*}
+      \sqrt[\leftroot{-3}\uproot{3}n]{m}=\frac{a}{b}
+    \end{align*}
+    Raise the power of both sides to n and multiplying by $b^n$:
+    \begin{align*}
+      mb^n=a^n
+    \end{align*}
+    Since \textbf{LHS} is divisible by $b$, \textbf{RHS} is divisible by $b$ which gives:
+    \begin{align*}
+      b \mid a^n
+    \end{align*}
+    The above result is same as (2.4), now following the steps of Part (a), we can prove that $a\notin\mathbb{Z}$ whether or not $b=1$ or $b\ne1$, and this is a \textbf{Contradiction} to (1.4) and $m$ must be irrational. \newline
+    \end{proof}
+  }
+  \subsection{Part (c)}{
+    We are given 2 integers $a$ and $b$ such that:
+    \begin{align}
+      \sqrt{ab} \notin \mathbb{Q} \label{eq:5}
+    \end{align}
+    We have to prove that:
+    \begin{align}
+      \Aboxed{(\sqrt{a}+\sqrt{b}) \notin \mathbb{Q}} \label{eq:6}
+    \end{align}
+    \begin{proof}
+    Lets assume that $\sqrt{a}+\sqrt{b}$ is a rational number and squaring the equation.
+    \begin{align}
+      \sqrt{a}+\sqrt{b}&=x \\ \label{eq:7}
+      \sqrt(ab)&=\frac{1}{2}(x^2-a-b) 
+    \end{align}
+    In (2.7) \textbf{RHS} is rational, thus \textbf{LHS} must also be rational but that is a \textbf{Contradiction} by (2.5). \newline
+  \end{proof}
+  }
+}
+
+\section{Problem 3 Solution}{
+  \subsection{Part (a)}{
+    We are given the following relation:
+    \begin{align}
+      S_n&=5S_{n-1}-6S_{n-2},\, \quad n>1 \\ \label{eq:1}
+      S_0&=0,S_1=1 
+    \end{align}
+    We need to prove the following the result:
+    \begin{align}
+      \Aboxed{S_n=3^n-2^n} \label{eq:3}
+    \end{align}
+    \begin{proof}
+      We are going to prove the result using induction. \newline
+      \textbf{Base Case} for $n=0,1,2$.
+      \begin{align*}
+        S_0&=3^0-2^0=0 \\
+        S_1&=3^1-2^1=1 \\
+        S_2&=5S_1-6S_0=5=3^2-2^2
+      \end{align*}
+      \textbf{Inductive Hypothesis}: We assume following satisfies the claim to prove $S_{n+1}$
+      \begin{align*}
+        S_2 \land S_3 \land \dots \land S_n
+      \end{align*}
+      \textbf{Inductive Step}: Using the relation (3.1) for $n+1$ and substituting (3.3) for $n$ and $n-1$:
+      \begin{align*}
+        S_{n+1}&=5S_n-6S_{n-1} \\
+        S_{n+1}&=5(3^n-2^n)-6(3^{n-1}-2^{n-1}) \\
+        S_{n+1}&=(5-2)3^n-(5-3)2^n \\
+        S_{n+1}&=3^{n+1}-2^{n+1}
+      \end{align*}
+      By above equations, the result is proved by induction. \newline
+    \end{proof}
+  }
+  \subsection{Part (b)}{
+    We have to prove the following relation:
+    \begin{align}
+      \Aboxed{1*2+2*3+\dots+(n-1)*n=\frac{(n-1)n(n+1)}{3} ,\, \quad n \in \mathbb{N}} \label{eq:4}
+    \end{align}
+    \begin{proof}
+      We are going to prove the result using induction. \newline
+      \textbf{Base Case} for $n=1$:
+      \begin{align*}
+        P_1=0*1=\frac{(1-1)1(1+1)}{3}=0 \\
+        P_2=1*2=\frac{(2-1)2(2+1)}{3}=2
+      \end{align*}
+      \textbf{Inductive Hypothesis}: Assuming $P_n$ satisfies the claim. \newline
+      \textbf{Inductive Step}:
+      \begin{align*}
+        P_{n+1}&=1*2+2*3+\dots+(n-1)*n+n*(n+1) \\
+        P_{n+1}&=P_n+n*(n+1) \\ 
+        P_{n+1}&=\frac{(n-1)n(n+1)}{3}+n(n+1) \\
+        P_{n+1}&=\frac{n(n+1)(n+2)}{3}
+      \end{align*}
+      By above equations, (3.5) is proved.
+    \end{proof}
+  }
+  \subsection{Part (c)}{
+    We have a set of $n$ distinct elements and $P_n$ is the number of subsets formed from this set, and we have to prove the following result:
+    \begin{align}
+      \Aboxed{P_n=2^n \quad \forall n \geqslant 0} \label{eq:6}
+    \end{align}
+    \begin{proof}
+      We are proving the result by hypothesis by induction. \newline
+      \textbf{Base Case} for $n=0$, only $1$ set is possible (empty set), for $n=1$, $2$ sets are possible (empty set and set of $1$ element), for $n=2$, $4$ sets are possible (empty set, $2$ sets of $1$ element each and $1$ set of $2$ elements):
+      \begin{align*}
+        P_0=1=2^0 \\
+        P_1=2=2^1 \\
+        P_2=4=2^2
+      \end{align*}
+      \textbf{Inductive Hypothesis} Assume $P_n=2^n$. \newline
+      \textbf{Inductive Step} Consider a set of $n+1$ elements. \newline
+      Let the set be \{$a_1,a_2,\dots,a_{n+1}$\}, now we kick out $1$ element from the set, let it be $a_1$, then the number of subsets formed by the set of remaining $n$ elements is $P_n$, and now we can have $2$ cases - either add the element $a_1$ or not add the element to a subset formed by $P_n$. \newline
+      Thus by above analogy:
+      \begin{align*}
+        P_{n+1}&=2*P_n \\
+        P_{n+1}&=2*2^n \\
+        P_{n+1}&=2^{n+1}
+      \end{align*}
+      By above equations and base case, (3.6) is proved.
+    \end{proof}
+  }
+  \subsection{Part (d)}{
+    \begin{proof}
+    We have a string of $n$ distinct letters and $P_n$ is the number of permutations we get from this string, and we have to prove the following result:
+    \begin{align}
+      \Aboxed{P_n=n!,\, \quad \forall n \in \mathbb{N}} \label{eq:7}
+    \end{align}
+    \textbf{Base Case} for $n=1$, only $1$ permutation is possible, for $n=2$, $2$ permutations are possible (ab and ba), for $n=3$, $6$ permutations are possible (abc, cab, bca, cba, acb and bac):
+    \begin{align*}
+      P_1=1=1! \\
+      P_2=2=2! \\
+      P_3=6=3!
+    \end{align*}
+    \textbf{Inductive Hypothesis} Assume $P_n=n!$. \newline
+    \textbf{Inductive Step}  Consider a string of $n+1$ letters. \newline
+    Let the string be \{$s_1,s_2\dots,s_{n+1}$\}, now we kick out $1$ letter from the string, let it be $s_{n+1}$, then the number of permutations we get from the string of remaining $n$ letters is $P_n$, and now we can have $n+1$ cases as there are $n+1$ places we can put the letter $s_{n+1}$ (between the the gaps of $n$ letters - $n-1$ places and $2$ ends):
+    \begin{align*}
+      P_{n+1}&=(n+1)*P_n \\
+      P_{n+1}&=(n+1)*n! \\
+      P_{n+1}&=(n+1)!
+    \end{align*}
+    By above equation and base cases, (3.7) is proved.
+    \end{proof}
+  }
+}
+
+\section{Problem 4 Solution}{
+  We are given a $n\times n$ board of white squares and we can choose $m<n^2$ squares randomly and colour them red. In each round we colour some more white squares according to some rules. \newline 
+  \textbf{Rules:}
+  \begin{myenv}
+    \textbf{1.} Already red squares remain red. \newline
+    \textbf{2.} A white square that has atleast 2 red neighbours is coloured red, neighbour is defined as those squares that are immediately to the left/right/up/down.
+  \end{myenv}
+  \begin{conjecture}
+    The smallest necessary value of $m$ for which the whole $n\times n$ board can be coloured red after a finitely many number of legal rounds is $n$.
+  \end{conjecture}
+  \begin{lemma}
+    Choosing initial red squares along the diagonal of the board (without leaving a white square in between 2 red squares on the diagonal) results in the maximum number of red squares and this number is $m^2$, after a finitely many number of rounds, for some $m\leqslant n$.
+  \end{lemma}
+  \begin{proof}
+    Consider $n\times n$ board to be a matrix with a square in $i_{th}$ row and $j_{th}$ column be denoted by $a_{ij}$. \newline
+    Lets first assume that $m$ squares are chosen along the diagonal of the $n\times n$ board, \{$a_{11},a_{22}\dots,a_{mm}$\} (continuous diagonal) are chosen to be coloured red initially. Going by the rules:
+    \begin{myenv}
+      \textbf{After Round 1}, the red coloured squares are \{$a_{11},a_{22}\dots,a_{mm}$\} and \{$a_{12},a_{23}\dots,a_{(m-1)m}$\} and \{$a_{21},a_{32}\dots,a_{m(m-1)}$\}. \newline
+      Following the pattern for subsequent rounds till $m-1$ rounds. \newline
+      \textbf{After Round (m-1)}, the red coloured squares will form a $m\times m$ board (matrix) from $a_{11}$ to $a_{mm}$.
+    \end{myenv}
+    Thus, in this assumption $m^2$ squares are finally coloured. \newline
+    Now we choose $m$ squares at some places other than continuous diagonal squares, then there might be two cases:
+    \begin{myenv}
+      \textbf{Case 1} - All the squares which are selected have the property such that \textit{Any two squares have atleast one vertex in common, excluding the above diagonal case} (e.g. $a_{12}$ and $a_{21}$ have one vertex in common). In this case after $k$ rounds, a rectangle of red squares will be formed whose area will be less than $m\times m$ square. Thus it will have $x<m^2$ squares. \newline
+      \textbf{Case 2} - All the squares which are selected have the property such that \textit{Atleast one square has no common vertex with any other square}. In this case there are one or more isolated red squares and thus the number of red squares finally will be $y<m^2$.
+    \end{myenv}
+    By above 2 cases we can see that \textbf{Lemma 1.1} holds.
+  \end{proof}
+  \begin{lemma}
+    $m=n$ is the minimum value of $m$ such that after finitely many rounds we get a full $n\times n$ white board coloured red.
+  \end{lemma}
+  \begin{proof}
+    By the proof of \textbf{Lemma 1.1} we can prove our proposition in 2 cases:
+    \begin{myenv}
+      \textbf{Case 1} ($m<n$) - this case will yield a maximum number of $m^2<n^2$ red coloured squares and thus it is not possible to colour full $n\times n$ board. \newline
+      \textbf{Case 2} ($m=n$) - this case will yield a $m^2=n^2$ red coloured squares which constitutes the full $n\times n$ board. \newline
+    \end{myenv}
+    By above 2 cases, \textbf{Lemma 1.2} holds.
+  \end{proof}
+  By above 2 lemmas, we can see that for $m\geqslant n$, we can find atleast $1$ permutation of the initially red and white coloured $n\times n$ board which will yield a fully red coloured board after a finitely many number of rounds, thus proving our \textbf{Conjecture}.
+}
+\section{Problem 5 Solution}{
+  \subsection{Part (a)}{
+    \textbf{Claim}: $n(n+1)$ is an odd number for every $n$. \newline
+    The proof provided for the claim is by induction: \newline
+    \textbf{Induction Hypothesis}: $(n-1)n$ is odd. \newline
+    \textbf{Inductive Step}:
+    \begin{align*}
+      n(n+1)=(n-1)n+2n
+    \end{align*}
+    Since $2n$ is even and $(n-1)n$ is odd and thus $n(n+1)$ is odd number. \newline
+    \textbf{Flaw}: The flaw in the proof is the missing \textbf{Base Case}, there exists no $n \in \mathbb{Z}$ such that $(n-1)n$ is odd and thus our \textbf{Inductive Hypothesis} is false for every $n \in \mathbb{Z}$.
+  }
+  \subsection{Part (b)}{
+    \textbf{Claim}: If we have $n$ lines in the plane, no two of which parallel, then they will go through one point. \newline
+    \textbf{Base Case}: \newline
+    \begin{myenv}
+      \textbf{n=1}, true as it is only 1 line. \newline
+      \textbf{n=2}, true since lines are non parallel. \newline
+    \end{myenv}
+    \textbf{Inductive Hypothesis}: Claim is true for $n-1$ lines. \newline
+    \textbf{Inductive Step}: Consider a set of $n$ lines - \{$a,b\dots$\}, take out one line $c$, by \textbf{I.H.} other $n-1$ lines meet at a point P, now insert back $c$ and remove line $d$, the remaining lines pass through point Q, since lines $a$ and $b$ are in both subsets, the points Q and P are same. \newline
+    \textbf{Flaw}: The flaw in the proof is in \textbf{Inductive Step}, the inductive step requires atleast 4 lines - \{$a,b,c,d$\} to be carried out, but looking at the \textbf{Base Case}, we can see that our claim fails even for $3$ lines, we can have $3$ non-parallel lines not intersecting at a single point. \newline
+    Suppose $n=3$, set $S=\{a,b,c\}$, we remove line $c$, the lines $a$ and $b$ intersect at point P and when we remove line $b$, the lines $a$ and $c$ intersect at point Q but we cannot prove that point P and Q are same.
+  }
+  \subsection{Part (c)}{
+    \textbf{Claim}: For $a \in \mathbb{R},n \in \mathbb{N_0}, a^n=1$ \newline
+    \textbf{Inductive Hypothesis}: It holds for $n$ and $n-1$. \newline
+    \textbf{Inductive Step}: For $n+1$
+    \begin{align*}
+      a^{n+1}=\frac{a^na^n}{a^{n-1}}=\frac{1\times1}{1}=1
+    \end{align*}
+    \textbf{Flaw}: The \textbf{Base Case} is not enough to assume the \textbf{Inductive Hypothesis}. \newline
+    Let $n=1$ and $n-1=0$, $a^1=a$ and $a^0=1$ and by following the steps provided:
+    \begin{align*}
+      a^{(1+1)}&=\frac{a^1a^1}{a^{(1-1)}} \\
+      a^2&=\frac{a^2}{1}
+    \end{align*}
+    Thus the above claim is false.
+  }
+}
+\end{document}

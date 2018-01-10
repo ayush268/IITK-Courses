@@ -1,0 +1,262 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage{changepage}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm, fouriernc, mathtools}
+\usepackage{microtype}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{lightgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{grey}{rgb}{0.25,0.25,0.25}
+\newcommand{\blackb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\lightgreyb}{\color{lightgrey} \usefont{OT1}{lmss}{m}{n}}
+
+\let\bold\textbf
+\newcommand\comb[2][^n]{\prescript{#1\mkern-0.5mu}{}C_{#2}}
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+\sectionfont{\color{lightgrey}}
+\subsectionfont{\color{lightgrey}}
+\subsubsectionfont{\color{lightgrey}}
+
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\arabic{section}.\arabic{subsection}}
+\renewcommand\thesubsubsection{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{lightgrey}}
+{\thesection} {3pt} {} }
+
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@Aboxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\patchcmd{\@boxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\makeatother
+
+\title{\vspace{80mm}\lightgreyb CS201: Math for CS I/Discreet Mathematics \\
+\lightgreyb Assignment $3$ Solutions}
+\author{Ayush Bansal \\
+Roll No. 160177}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{claim}{Claim}[subsection]
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+\AfterEndEnvironment{theorem}{\noindent\ignorespaces}
+\renewcommand\thelemma{\arabic{section}.\arabic{lemma}}
+
+\newenvironment{myenv}{\begin{adjustwidth}{1cm}{}}{\end{adjustwidth}}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Problem 1 Solution}{
+  \subsection{Part (a)}{
+    We are given a \bold{simple} graph $G=(10,28)$.
+    \begin{claim}
+      $G$ has a cycle of length 4.
+    \end{claim}
+    \begin{proof}
+      Since the number of vertices and edges in the graph are $10$ and $28$ respectively, the average degree $d(G)=\frac{2\mid E\mid}{\mid V\mid}$ of the graph is $5.6$ and thus, we can observe that there has to be atleast $2$ vertices with degree sum atleast $12$ i.e. $deg(v)+deg(u) \geq 12$. \newline
+      If $u$ and $v$ are not adjacent to each other then, they are connected to $12$ other vertices but there are only $8$ vertices left so there will be atleast $4$ common vertices between the $2$ which gives us a cycle of $4$. \newline
+      If $u$ and $v$ are adjacent to each other then their degree sum is lowered to $10$ and they are connected to $10$ other vertices but again there are only $8$ vertices left so there will be atleast $2$ common vertices between the $2$ which again gives us a cycle of $4$
+    \end{proof}
+  }
+  \subsection{Part (b)}{
+    We are given a \bold{simple} graph $G=(10,38)$. I first make the following claim:
+    \begin{claim}
+      There are atleast $3$ vertices such that $deg(v) \geq 8$.
+    \end{claim}
+    \begin{proof}
+      Since the graph is simple, the maximum degree a vertex can have is $\mid V \mid -1$ i.e. $9$ in this case, also the sum of degrees of all vertices will be $2 \mid E \mid = 76$. \newline
+      Assume $8$ vertices have $deg(v) \leq 7$ which means the sum of their degrees is $\leq 56$ but that would mean the sum of degrees of other $2$ vertices is $\geq 20$ which is not possible, but now consider $7$ vertices have $deg(v) \leq 7$ which means the sum of their degrees is $\leq 49$ and this is possible if other $3$ vertices have $deg(v)=9$. \newline
+      The above arguments prove that there are atleast $3$ vertices such that $deg(v) \geq 8$.
+    \end{proof}
+    Now I will use the result of the above claim to prove the following claim.
+    \begin{claim}
+      $G$ contains $K_4$ as an induced sub-graph.
+    \end{claim}
+    \begin{proof}
+      Consider the $3$ vertices $v_1,v_2,v_3$ such that their degree is $8$, now since $v_1$ has degree $8$, it will connected to $8$ vertices out of which atleast $1$ will be one out of $v_2,v_3$, same goes for $v_2$ and $v_3$, so $1$ vertex out of $3$ is connected to other $2$. \newline
+      So finally we have edges $(v_1,v_2),(v_2,v_3)$ and there will a vertex $v_4$ such that it is connected to all $3$ earlier vertices, now we have $2$ cases: \newline
+      \bold{Case 1.} There is an edge between $v_1,v_3$
+      \begin{myenv}
+        If there is an edge $(v_1,v_3)$, then we are done and our \bold{induced subgraph $K_4$} is $v_1,v_2,v_3,v_4$.
+      \end{myenv}
+      \bold{Case 2.} There is no edge between $v_1,v_3$
+      \begin{myenv}
+        Since the remaining degree of $v_1$ is $6$, it will be connected to every other node of the graph and since we know that degree of any node can't be $ \leq 2$, there will be a node $v_5$ such that it is connected to $v_4,v_1,v_2$ which gives us an \bold{induced graph $K_4$} i.e. graph of nodes $v_1,v_2,v_4,v_5$.
+      \end{myenv}
+    \end{proof}
+  }
+  \subsection{Part (c)}{
+    We will find the number of \bold{automorphisms} for each graph in the following cases:
+    \subsubsection{Part i}{
+      We are given a \bold{complete} graph $K_n$.
+      \begin{solution}
+        Every node of this graph has degree $n-1$ and it is connected to every other node of the graph. \newline
+        Since all nodes have degree $n-1$, thus we can consider each node as equivalent while finding the number of automorphisms, thus the final number will be:
+        \begin{align*}
+          \comb[n]{1}(n-1)!=n!
+        \end{align*}
+        Thus, the final answer will be $n!$.
+      \end{solution}
+    }
+    \subsubsection{Part ii}{
+      We are given a \bold{Cycle} graph $C_n$.
+      \begin{solution}
+        Every node of this graph has degree $2$ and thus degree of every node afterwards must also remain the same. \newline
+        Since all nodes have degree $2$, thus we can consider each node as equivalent while finding the number of automorphisms, thus the final answer will be:
+        \begin{align*}
+          \comb[n]{1}2!=2n
+        \end{align*}
+        Thus, the final answer will be $2n$.
+      \end{solution}
+    }
+    \subsubsection{Part iii}{
+      We are given a \bold{Path} graph $P_n$.
+      \begin{solution}
+        The graph is considered to be a straight line with $n$ nodes i.e. $2$ nodes with degree $1$ and other nodes with degree $2$. \newline
+        Thus the possible \bold{number of automorphisms} of this graph is $\bold{2}$ as any other automorphism will either changes the degree of the vertices or changes the relative order of the vertices.
+      \end{solution}
+    }
+    \subsubsection{Part iv}{
+      We are given a \bold{Star} graph $S_n$.
+      \begin{solution}
+        In this graph there is $1$ nodes of degree $n-1$ and all other nodes of degree $1$ which means the node with degree $n-1$ lies at the centre and all other nodes are connected to it. \newline
+        Now counting the possible number of automorphisms, the node at the centre will remain the same and other nodes can be considered equivalent which means the \bold{number of automorphisms} is $\bold{(n-1)!}$.
+      \end{solution}
+    }
+  }
+  \subsection{Part (d)}{
+    We are given a \bold{simple} graph $G$ such that $\delta(G)=k$ where $\delta(G)$ is the minimum degree of the graph.
+    \begin{claim}
+      $G$ has a cycle of length atleast $k+1$.
+    \end{claim}
+    \begin{proof}
+      Since the degree of each vertex is $k$, there has to be atleast $k+1$ vertices in the graph since it is a simple graph. \newline
+      Consider $x_0,\dots x_n$ to be a longest path in $G$, then all the neighbours of $x_n$ lie on this path, thus we can say that $n \geqslant d(x_n) \geqslant k$. \newline
+      If $i<n$ is minimal with $x_ix_n \in E(G)$, then $x_i\dots x_nx_i$ is a cycle of length atleast $k+1$.
+    \end{proof}
+  }
+}
+\section{Problem 2 Solution}{
+  \subsection{Part (a)}{
+    We are given a \bold{simple} graph $G=(V,E)$ with $n$ nodes such that for distinct $u,v \in V$, we have $deg(u)+deg(v)\geq n$.
+    \subsubsection{Part i}{
+      I have to prove the following claim
+      \begin{claim}
+        $G$ is connected.
+      \end{claim}
+      \begin{proof}
+        I will prove the claim by \bold{contradiction}. \newline
+        Assume the graph $G$ is disconnected. \newline
+        Since the graph is disconnected, there will be atleast $2$ connected different sub-graphs of the graph which have no edge between them, let these components be $A$ and $B$. \newline
+        $\therefore$ there will be non-adjacent vertices $u$ and $v$ in $A$ and $B$ respectively, let $A$ and $B$ have total number of $a$ and $b$ vertices, so $a+b \leq n$. \newline
+        The graph is simple thus a node in $A$ can have a max degree of $\mid A\mid -1$ which means $deg(u) \leq a-1$ and $deg(v) \leq b-1$.
+        \begin{align*}
+          deg(u)+deg(v) &\leq a+b-2 \\
+          deg(u)+deg(v) &< a+b \\
+          deg(u)+deg(v) &< n
+        \end{align*}
+        The above equation is clearly a \bold{contradiction} as $deg(u)+deg(v) \geq n$ and thus graph $G$ is connected.
+      \end{proof}
+    }
+    \subsubsection{Part ii}{
+      I have to prove the following claim.
+      \begin{claim}
+        $G$ has a $\bold{H-cycle}$.
+      \end{claim}
+      \begin{proof}
+        I will prove the claim by \bold{contradiction}. \newline
+        Assume the graph has no $\bold{H-cycle}$. \newline
+        Since we know graph is connected as we proved above as \bold{Claim 2.1.1}, we consider a graph $G$ with the most possible edges such that the graph $G$ is not Hamiltonian. \newline
+        Since the graph $G$ has the most possible edges without an $H-cycle$, adding $1$ edge must make it Hamiltonian, thus there must be a \bold{Hamiltonian Path} - $\{v_1,v_2\dots v_n\}$ in the graph. \newline
+        Since we know, $G$ has no $H-cycle$, nodes $v_1$ and $v_n$ do not have an edge between them, now consider $v_i$ is neighbour of $v_1$, then $v_{i-1}$ can't be the neighbour of $v_n$, otherwise we will get a $H-cycle$ which is $\{v_1,v_2\dots,v_{i-1},v_n,v_{n-1},\dots,v_i,v_1\}$. \newline
+        Since, if $v_i$ is neighbour of $v_1$ then $v_{i-1}$ is not the neighbour of $v_n$ which gives us 
+        \begin{align}
+          deg(v_1)+deg(v_n) \leq n-1 \label{eq:1}
+        \end{align}
+        Equation (2.1) is clearly a \bold{contradiction} as $deg(v_1)+deg(v_n) \geq n$.
+      \end{proof}
+    }
+    \subsubsection{Part iii}{
+      Now consider \bold{simple} graph $G=(V,E)$ such that $\mid V\mid =n$ and $\forall u,v \in V$ we have $deg(u)+deg(v) \geq n-1$.
+      \begin{claim}
+        \bold{Claim 2.1.2} does not hold for the above mentioned graph.
+      \end{claim}
+      \begin{proof}
+      In this case it is possible that the graph has no $H-cycle$ as by equation (2.1) we can see that it is possible to have $deg(v_1)+deg(v_n)=n-1$ and not be a \bold{Hamiltonian} graph. \newline
+      Taking an example graph $G=(4,4)$ such that $V=\{v_1,v_2,v_3,v_4\}$ and $E=\{(v_1,v_2),(v_1,v_3),(v_2,v_3),(v_3,v_4)\}$, this graph does not have a $H-cycle$ but satisfies the condition $deg(v_i)+deg(v_j) \geq 3$.
+    \end{proof}
+    }
+  }
+  \subsection{Part (b)}{
+    We are given a \bold{simple} graph $G=(V,E)$ with $\mid V\mid =n$ and $\forall v \in V, deg(v)\geq \frac{n}{2}$.
+    \begin{claim}
+      $G$ has a \bold{H-cycle}.
+    \end{claim}
+    \begin{proof}
+      I will prove the claim by \bold{contradiction}, so lets assume $G$ doesn't have a $H-cycle$. \newline
+      Since $deg(v)\geq \frac{n}{2}$, consider $2$ nodes in $V$, $deg(u)+deg(v) \geq n$, thus by \bold{Claim 2.1.1}, graph $G$ is connected. \newline
+      Now consider a path $P$ and let this path be the longest path of the graph $G$, $P=\{v_1,v_2\dots v_k\}$, and since it is the longest path $v_1$ and $v_k$ cannot have an edge with some other vertex $u$ which is not in path $P$ as it will yield a longer path. \newline
+      Since $deg(v_1) \geq \frac{n}{2}$, and $v_1$ can have edges only with vertices in path $P$, we have $k \geq \frac{n}{2} +1$. \newline
+      Consider a vertex $v_j$ in this path, if it is adjacent to $v_k$, then $v_{j+1}$ can't be adjacent to $v_1$ otherwise the path $P$ will form a cycle $\{v_1,v_{j+1},\dots,v_{k-1},v_k,v_j\dots,v_2,v_1\}$ and since $G$ is connected this path $P$ will cover all the nodes of the graph otherwise if there are other nodes, $G$ will become disconnected. \newline
+      Since, if $v_j$ is adjacent to $v_k$, $v_{j+1}$ can't be adjacent to $v_1$ which gives us
+      \begin{align*}
+        k &\geq deg(v_1)+deg(v_k)+1 \\
+        k &\geq n+1
+      \end{align*}
+      But the above equation is clearly a \bold{contradiction} as there can be only $n$ nodes.
+    \end{proof}
+  }
+}
+\newpage
+\section{Problem 3 Solution}{
+  \subsection{Part (a)}{
+    We are given a complete graph $K_n$ and I have to find the number of different \bold{Hamiltonian Cycles} in the graph.
+    \begin{solution}
+      Since the graph is complete, every vertex is adjacent to every other vertex and thus we can take vertices in any order. \newline
+      Since there are $n$ vertices, $n!$ ways are possible of ordering the vertices in a cycle and since for having different H-cycle, the edge set must be different, so we need to eliminate the similar cases. \newline 
+      We need to divide the answer by $\comb[n]{1}$ since we can start from any vertex, also since a cycle is same backwards and forwards, we need to eliminate those cases, thus dividing by $2$, the final answer will be
+      \begin{align*}
+        \frac{n!}{2\comb[n]{1}}=\frac{(n-1)!}{2}
+      \end{align*}
+    \end{solution}
+  }
+  \subsection{Part (b)}{
+    We are given a bi-partite complete graph $K_{m,n}$ where $\mid V_1 \mid =m$ and $\mid V_2 \mid =n$ and $mn$ edges connect nodes in $V_1$ to nodes in $V_2$.
+    \begin{claim}
+      $K_{m,n}$ has no \bold{H-cycle} when $m \neq n$.
+    \end{claim}
+    \begin{proof}
+      Since the graph is complete bi-partite, there is an edge between each node of $V_1$ and $V_2$, so we can consider nodes of $V_1$ and $V_2$ equivalent among themselves. \newline
+      For traversing between the $2$ sets of vertices, we will move alternately as the graph is bi-partite. \newline
+      Since $m \neq n$, let $m>n$, assume that $G$ has a $H-cycle$, let cycle start at some node $u \in V_2$, so after traversing $2n$ edges, we will arrive back at $u$ and since $m>n$, there will $m-n$ vertices left in $V_1$ which will not be visited. \newline
+      By above arguments, it is clear $K_{m,n}$ will not have a \bold{H-cycle} when $m \neq n$.
+    \end{proof}
+    Now, we consider $m=n$ and find the number of \bold{H-cycles}.
+    \begin{solution}
+      Consider a vertex $v \in V_1$ and let's start the cycle from this point, since all nodes are equivalent, we can begin from any vertex and finally reach at that. \newline
+      Now begin from $v$, we can choose $1$ of $n$ vertices from $V_2$, then $1$ of $n-1$ vertices left of $V_1$ and continuing this we get $n!(n-1)!$ and since a cycle is same forwards and backwards, the final answer will be to divide it by $2$. \newline
+      Thus the answer when $m=n$ is $\frac{n!(n-1)!}{2}$.
+    \end{solution}
+  }
+}
+\end{document}

@@ -1,0 +1,425 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage{changepage}
+
+\usepackage[]{algorithm2e}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm, fouriernc, mathtools}
+\usepackage{microtype}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{lightgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{grey}{rgb}{0.25,0.25,0.25}
+\newcommand{\blackb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\lightgreyb}{\color{lightgrey} \usefont{OT1}{lmss}{m}{n}}
+
+\let\bold\textbf
+\newcommand\comb[2][^n]{\prescript{#1\mkern-0.5mu}{}C_{#2}}
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+\sectionfont{\color{lightgrey}}
+\subsectionfont{\color{lightgrey}}
+\subsubsectionfont{\color{lightgrey}}
+
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\arabic{section}.\arabic{subsection}}
+\renewcommand\thesubsubsection{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{lightgrey}}
+{\thesection} {3pt} {} }
+
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@Aboxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\patchcmd{\@boxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\makeatother
+
+\title{\vspace{80mm}\lightgreyb Math for CS I/Discrete Mathematics \\
+\lightgreyb Assignment $4$ Solutions}
+\author{Ayush Bansal \\
+Roll No. 160177}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{claim}{Claim}[section]
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+\AfterEndEnvironment{theorem}{\noindent\ignorespaces}
+\renewcommand\thelemma{\arabic{section}.\arabic{lemma}}
+\renewcommand\theclaim{\arabic{section}.\arabic{claim}}
+
+\newenvironment{myenv}{\begin{adjustwidth}{1cm}{}}{\end{adjustwidth}}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Problem 1 Solution}{
+  \subsection{Part (a)}{
+    I am given $2$ sets i.e. set $S=\{s_1,\dots,s_n\}$ of n students who are seeking jobs and set $J=\{j_1,\dots,j_m\}$ of jobs. \newline
+    Each student gives a ranked list of all jobs, similarly each job gives a ranked list of all students for the post. \newline
+    My task is to create a stable pairing (matching) of students and jobs such that number of jobs are less than number of students $(n>m)$. \newline
+    Let the set of stable pairs be $M$ and this set contains $m$ pairs such that each pair has a unique student and unique job. \newline \newline
+    \begin{algorithm}[H]
+      \KwData{Set $S$ and $J$, each student's and job's ranked lists}
+      \KwResult{Return the set $M$ of student-job pairs}
+      Initially all $s_i \in S$ and $j_i \in J$ are free\;
+      \While{There is a student $s_i$ who is unemployed and hasn't applied to every job}{
+        Choose such a student $s_i$\;
+        Let $j_k$ be the highest-ranked job in $s_i's$ ranked list to which $s_i$ hasn't yet applied\;
+        \eIf{$j_k$ is vacant}{
+          $(s_i,j_k)$ become paired\;
+        }{
+          (Assume $j_k$ is paired with $s_l$)\;
+          \eIf{$j_k$ ranks $s_l$ higher than $s_i$}{
+            $s_i$ remains unemployed\;
+          }{
+            $(j_k,s_i)$ becomes paired\;
+            $s_l$ becomes unemployed\;
+          }
+        }
+      }
+      \caption{Stable Pairing Algorithm}
+    \end{algorithm}
+     The above algorithm will terminate when all the students have applied to each job once. \newline
+     Since we start at each student's ranked list in the algorithm, the final solution will be in favour of selected students rather than the jobs they have applied to. \newline
+    Since the maximum number of possible pairs are $n \cdot m$, the time complexity for the algorithm is $O(n \cdot m)$.
+  }
+  \newpage
+  \subsection{Part (b)}{
+    Before proving the stability of the produced matching $M$, I will highlight the following points:
+    \begin{enumerate}
+      \item $j_i$ will remain occupied from the point a person applies to it until a better one applies and it continues.
+      \item The student applies to jobs in sequence of it's ranked list of jobs.
+      \item The set $M$ returned at termination of loop is a J-saturated matching.
+    \end{enumerate}
+    The above points are implied from the execution of the algorithm and I will assume the above to be true while proving the stability of the algorithm. \newline
+    Now I will prove the correctness of the above algorithm. \newline
+    \bold{Proof of Correctness}:
+    \begin{proof}
+      By above \bold{Point 3}, the set $M$ is a J-saturated matching. \newline
+      Assume there is an instability with respect to $M$, There will be $2$ cases here: \newline
+      \bold{Case 1}: Assuming $s_1$ to be paired, let the instability involve pairs $(s_1,j_1)$ and $(s_2,j_2)$.
+      \begin{myenv}
+        So, in this case we will have:
+        \begin{itemize}
+          \item $j_2$ prefers $s_1$ over $s_2$.
+          \item $s_1$ prefers $j_2$ over $j_1$.
+        \end{itemize}
+        In the execution of the algorithm that gave $M$, $s_1's$ last application was (by definition) to $j_1$, now there are $2$ possibilities.\newline
+        If $s_1$ didn't apply for $j_2$ at some earlier point, then it means $j_1$ must occur higher on $s_1's$ ranked-list which gives us a \bold{contradiction}. \newline
+        If $s_1$ applied for $j_2$ and got rejected, then $j_2$ prefers $s_k$ over $s_1$ and by definition $s_k=s_2$ which again gives us a \bold{contradiction}.
+      \end{myenv}
+      \bold{Case 2}: Assuming $s_1$ is unpaired and instability involve $s_1$ and $(s_2,j_2)$.
+      \begin{myenv}
+        So, in this case we will have:
+        \begin{itemize}
+          \item $j_2$ prefers $s_1$ over $s_2$.
+        \end{itemize}
+        In the execution of the algorithm that gave $M$, $s_1's$ has applied to each job but in the end he was rejected. \newline
+        As $s_1$ applied to $j_2$ and got rejected, then $j_2$ prefers $s_k$ over $s_1$ and by definition $s_k=s_2$ which gives us a \bold{contradiction}.
+      \end{myenv}
+      By \bold{contradiction}, the proof of correctness is concluded.
+    \end{proof}
+  }
+}
+\newpage
+\section{Problem 2 Solution}{
+  \subsection{Part (a)}{
+    We are given a connected planar graph $G=(V,E)$. I have to prove the following claim for this graph.
+    \begin{claim}
+      All planar embeddings of a connected planar graph have the same number of faces.
+    \end{claim}
+    \begin{proof}
+      By the definition of planar embeddings all the drawings will have the same number of vertices and edges i.e. $\mid V \mid$ and $\mid E \mid$, also the edges drawn do not intersect. \newline
+      Since the number of edges and vertices is same, for every connected planar graph, by \bold{Euler's Formula}, we have $F=E-V+2$ which remains constant since $E$ and $V$ remain the same. \newline
+      Also, since no edges cross in any of the drawing, we can observe the number of faces will remain the same as all the graphs will have same number of edges, vertices and each vertex has same degree.
+    \end{proof}
+  }
+  \subsection{Part (b)}{
+    I have to prove the \bold{Euler's Formula} by using induction on number on nodes and faces.
+    \subsubsection{Part (i)}{
+      Firstly, I will prove using \bold{induction on nodes}.
+      \begin{proof}
+      Consider a connected planar graph $G=(V,E)$, let the number of faces in this graph be $F$. \newline
+      \bold{Base Case}:
+      \begin{myenv}
+        For $V=1$, we have $F=1$ and $E=0$, so $V+F=E+2$ is satisfied. \newline
+        For $V=2$, we have $F=1$ and $E=1$, so $V+F=E+2$ is satisfied.
+      \end{myenv}
+      \bold{Inductive Hypothesis}: Euler's Formula holds for a connected planar graph of   $V-1$ nodes. \newline
+      \bold{Inductive Step}:
+      \begin{myenv}
+        Remove a vertex $u$ from the graph $G$ which is not a \bold{cut-vertex} otherwise graph will not remain connected. \newline
+        Let the degree of vertex $u$ be $d$, since we are removing $u$ from the graph, the number of edges will be reduced by $d$ and thus the number of faces will reduce by $d-1$. \newline
+        So, the sub-graph $H$ will have $V'=V-1,E'=E-d,F'=F-(d-1)$, since the Euler's Formula is valid for this graph as $V'=V-1$, we have:
+        \begin{align*}
+          V'+F'&=E'+2 \\
+          V-1+F-(d-1)&=E-d+2 \\
+          V+F&=E+2
+        \end{align*}
+        Above equations prove the Euler's Formula by Induction on Nodes.
+      \end{myenv}
+      \end{proof}
+    }
+    \newpage
+    \subsubsection{Part (ii)}{
+      Secondly, I will prove using \bold{induction on faces}.
+      \begin{proof}
+        Consider a connected planar graph $G=(V,E)$, let the number of faces in this graph be $F$. \newline
+        \bold{Base Case}:
+        \begin{myenv}
+          For $F=1$, we will have $0$ cycles i.e. the graph is a tree, so $E=V-1$ and $V+1=V-1+2$. Euler's Formula is satisfied.
+        \end{myenv}
+        \bold{Inductive Hypothesis}: Euler's Formula holds for a connected planar graph of $F-1$ faces. \newline
+        \bold{Inductive Step}:
+        \begin{myenv}
+          For a graph with faces $F \geq 2$, we will have atleast $1$ cycle in the graph and when we break a cycle by removing an edge from this cycle, the number of faces will reduce by $1$. \newline
+          So, the sub-graph $H$ will have $V'=V,E'=E-1,F'=F-1$, since the Euler's Formula is valid for this graph as $F'=F-1$, we have:
+          \begin{align*}
+            V'+F'&=E'+2 \\
+            V+F-1&=E-1+2 \\
+            V+F&=E+2
+          \end{align*}
+          Above equations prove the Euler's Formula by Induction on Faces.
+        \end{myenv}
+      \end{proof}
+    }
+  }
+  \subsection{Part (c)}{
+    \subsubsection{Part (i)}{
+      I will prove this problem by using \bold{Kuratowski's and Wagner's Theorems}. \newline
+      The number of vertices in $G^*$ will be equal to number of faces in $G_p$, but we cannot comment on the number of edges in case of \bold{simple graphs}, as in case of \bold{dualism}, the graphs formed can be multi-graphs also which is why the edges also remain same in number.
+      \begin{proof}
+        Firstly, consider the case of $K_5$:
+        \begin{myenv}
+          Consider $5$ vertices in graph $G^*$. \newline
+          Each of these $5$ vertices will have a corresponding face in graph $G_p$ and the graph $G_p$ is planar connected graph. \newline
+          Assume these $5$ vertices have $10$ edges among them which means each vertex is connected to every other vertex, then each corresponding face of these vertices is connected to each other, it means there is a sub-graph $H$ of $G_p$ with $5$ faces in which each and every face share an edge. \newline
+          The graph $H$ has to be non-planar as it would form a closed 3-D object with 5 pentagons as faces but this is \bold{contradiction} to the fact that $G_p$ is planar. \newline
+          So, the graph $G^*$ cannot have graph $K_5$ as edge-equivalent to one of its sub-graph. \newline
+        \end{myenv}
+        Secondly, consider the case of $K_{3,3}$:
+        \begin{myenv}
+          Consider $6$ vertices in graph $G^*$. \newline
+          Each of these $6$ vertices will have a corresponding face in graph $G_p$ and the graph $G_p$ is planar connected graph. \newline
+          Assume the sub-graph $A$ of $G^*$ formed by these vertices is edge equivalent to $K_{3,3}$, then the corresponding sub-graph $B$ of graph $G_p$ will exist whose faces map to these $6$ vertices, that is there will be $2$ sets of faces such that each face from $1$ set is connected to every face of 2nd set. \newline
+          If we know above scheme then the graph $B$ has to be non-planar as it would again form a closed $3-D$ object with $6$ triangles as faces but this is a \bold{contradiction} to the fact that $G_p$ is planar. \newline
+          So, the graph $G^*$ cannot have graph $K_{3,3}$ as edge-equivalent to one of its sub-graph.
+        \end{myenv}
+        Since no sub-graph of $G^*$ is edge-equivalent to $K_5$ ot $K_{3,3}$, by \bold{Kuratowski’s and Wagner’s Theorems}, graph $G^*$ is \bold{planar}.
+      \end{proof}
+    }
+    \subsubsection{Part (ii)}{
+      We are given a planar connected graph $G_p=(V,E)$ with $F$ number of faces, now a graph $G^*$ is constructed such that every face is turned into a node and if there is a separating edge between between $2$ faces in $G_p$, then there will be an edge between their corresponding nodes in $G^*$. \newline
+      Since every face will have atleast $1$ common edge with some other face if $F \geq 2$, there will be no isolated node in $G^*$.
+      \begin{proof}
+      Assume $G^*$ to be disconnected, then there exists atleast $2$ components of the graph whose nodes don't have a path between them, let the vertices in these $2$ components correspond to faces $\{f_1,f_2,\dots,f_m\}$ and $\{g_1,g_2,\dots,g_n\}$ in $G_p$ respectively. \newline
+      Consider faces $\{k_1,k_2,\dots,k_l\}$ of the graph $G_p$, face $k_a$ will be adjacent to $k_b$ which will be adjacent to $k_c$ and so on, this will cover all the faces of the set $G_p$ because the graph is planar and it cannot be drawn having a completely isolated group of faces. \newline 
+      Thus, our assumption is wrong and graph $G^*$ has to be connected graph.
+    \end{proof}
+    }
+  }
+  \subsection{Part (d)}{
+    \subsubsection{Part (i)}{
+      I have to prove that graph $K_5$ which is a complete graph of $5$ nodes is \bold{non-planar}. \newline
+      Firstly, I will prove the following claim.
+      \begin{claim}
+        For a maximal planar graph, where each face is a triangle, $E=3V-6$, so for any planar graph with $V \geq 3$, we have $E \leq 3V-6$.
+      \end{claim}
+      \begin{proof}
+        Summing up the number of edges making a face taking each face one at time gives us twice the number of total edges as each edge will be counted twice in adjacent faces. \newline
+        Also since least possible value of a face could be a triangle, by applying \bold{Euler's Formula} we will have:
+        \begin{align*}
+          \sum_{f \in F} e_f &= 2E \\
+          e_f &\geq 3 \\
+          2E &\geq 3F \\
+          V-E+2E/3 &\geq 2 \\
+          E &\leq 3V-6
+        \end{align*}
+        Above equations prove my claim.
+      \end{proof}
+      Now in case of $K_5$, $E=10,V=5$ i.e. $10 > 3(5)-6$ which contradicts above claim, so the graph $K_5$ has to \bold{non-planar}.
+    }
+    \subsubsection{Part (ii)}{
+      I have to prove that graph $K_{3,3}$ which is a complete bi-partite graph of $2$ sets of $3$ nodes each is \bold{non-planar}. \newline
+      Firstly, I will prove the following claim.
+      \begin{claim}
+        For a planar graph whose no face is a triangle, $E \leq 2V-4$.
+      \end{claim}
+      \begin{proof}
+        Initial steps will be same as I did in the proof of \bold{Claim 2.2}. \newline
+        Also in this case, least possible number of edges in a face is $4$, by applying \bold{Euler's Formula} we will have:
+        \begin{align*}
+          \sum_{f \in F} e_f &= 2E \\
+          e_f &\geq 4 \\
+          2E &\geq 4F \\
+          V - E + E/2 &\geq 2 \\
+          E &\leq 2V-4
+        \end{align*}
+        Above equations prove my claim.
+      \end{proof}
+      Now in case of $K_{3,3}$, it is a bipartite graph, so it cannot have any \bold{odd cycles} which means there will be no cycle of $3$ nodes in this graph. \newline
+      For this graph to be planar, it has to satisfy $E \leq 2V-4$.
+      \begin{align*}
+        E&=9,V=6 \\
+        9 &> 2(6)-4 
+      \end{align*}
+      The above equation contradicts above claim which proves $K_{3,3}$ is a \bold{non-planar} graph.
+    }
+  }
+}
+\newpage
+\section{Problem 3 Solution}{
+  \subsection{Part (a)}{
+    I am given $2$ sets $A$ and $B$ such that $\mid A \mid = m$ and $\mid B \mid = n$. For each part, I have to calculate the number of functions which satisfy a given condition.
+    \subsubsection{Part (i)}{
+      I have to calculate \bold{all possible} number of functions from set $A$ to set $B$. Let the answer be $P$. \newline
+      There are $m$ elements in the set $A$ and in case of a function, each element of set $A$ is mapped to a single element in set $B$. \newline
+      Each element in set $A$ has $n$ ways (elements in set $B$) in which it can be mapped, so multiplying $n$, $m$ times.
+      \begin{align}
+        P&=n*n*\dots m \: times \label{eq:1} \\
+        P&=n^m
+      \end{align}
+      The final answer is eq (3.2).
+    }
+    \subsubsection{Part (ii)}{
+      I have to calculate number of \bold{injections} from set $A$ to $B$. Let the answer be $P$. \newline
+      There are $m$ elements in the set $A$ and all these elements have to be mapped to different elements from set $B$, so the number of elements in set $B$ has to be atleast $m$.
+      Thus, we have $2$ cases: \newline
+      \bold{$n<m$}:
+      \begin{myenv}
+        In this case, the number of elements in set $B$ are not enough to form an injection and thus $P=0$.
+      \end{myenv}
+      \bold{$n \geq m$}:
+      \begin{myenv}
+        In this case, we have to select $m$ elements from the set $B$ and then distribute them over the $m$ elements of set $A$.
+        $$ P=\binom{n}{m} \cdot m!= \frac{n!}{(n-m)!} $$
+      \end{myenv}
+    }
+    \subsubsection{Part (iii)}{
+      I have to calculate the number of \bold{surjections} from set $A$ to $B$. Let the answer be $P$. \newline
+      There are $n$ elements in the set $B$ and each element of set $B$ must be mapped to atleast $1$ element in set $A$. Thus, we have $2$ cases: \newline
+      \bold{$m<n$}:
+      \begin{myenv}
+        In this case, the number of elements in set $A$ are not enough to form a surjection and thus $P=0$.
+      \end{myenv}
+      \bold{$m \geq n$}:
+      \begin{myenv}
+        In this case, we use \bold{Principle of Inclusion and Exclusion} to calculate the number of surjections, the total number of functions are $n^m$ and we leave $i$ elements at a time from the set $B$ such that $i \in {1,2,\dots,n}$.
+        $$ P=n^m - \binom{n}{1} \cdot (n-1)^m + \binom{n}{2} \cdot (n-2)^m \dots$$
+        $$ P=\sum_{i=0}^{n} (-1)^i \binom{n}{i} \cdot (n-i)^m $$
+      \end{myenv}
+    }
+    \subsubsection{Part (iv)}{
+      I have to calculate the number of \bold{bijections} from set $A$ to set $B$. Let the answer be $P$. \newline
+      In case of bijection, each element of set $A$ must be mapped to a single and distinct element of set $B$ and same in the case of set $B$, i.e. there exists an \bold{injection} as well as \bold{surjection} from set $A$ to set $B$. Thus, we have $3$ cases: \newline
+      \bold{$m<n$}:
+      \begin{myenv}
+        There exists no \bold{surjection} in this case and thus $P=0$.
+      \end{myenv}
+      \bold{$m>n$}:
+      \begin{myenv}
+        There exists no \bold{injection} in this case and thus $P=0$.
+      \end{myenv}
+      \bold{$m=n$}:
+      \begin{myenv}
+        In this both injection and surjection exists and thus the number of \bold{bijections} are $P=m!=n!$.
+      \end{myenv}
+    }
+  }
+  \subsection{Part (b)}{
+    In this part we are given $2$ sets i.e. set $A$ of $4$ persons and set $B$ of $5$ jobs and we have to assign each person atleast one job, i.e. we have to find number of \bold{surjections} from set $B$ to set $A$. \newline
+    By using the formula we derived in \bold{section 3.1.3} and putting $m=5,n=4$ we get the following result:
+    \begin{align*}
+      4^5 - \binom{4}{1} \cdot 3^5 + \binom{4}{2} \cdot 2^5 - \binom{4}{3} \cdot 1^5 = 240
+    \end{align*}
+    Thus, the answer is \bold{240}.
+  }
+  \subsection{Part (c)}{
+    We are given a $10 \times 10$ array of evenly spaced point and I have to find how many squares can be drawn. \newline
+    \begin{claim}
+      For a $n \times n$ array of evenly spaced point s.t. $n \geq 2$, the number of squares that can be drawn is $P$:
+      \begin{align}
+        P&=\sum_{i=1}^{n-1} 2^{(i+1)mod2}(n-i)^2 \label{eq:3} \\
+        P&=\frac{n(n-1)^2}{2}
+      \end{align}
+    \end{claim}
+    \begin{proof}
+      Consider a $n \times n$ array of evenly spaced points, so this is a grid of $n^2$ points. Now lets consider $2$ cases: \newline
+      \bold{n is odd}:
+      \begin{myenv}
+        In this case, we will have one square of full size (side length is $(n-1)$) and one square which will be formed by joining the mid points of sides of previous square (as $(n-1)$ is even) and then the problem can be divided into a smaller one i.e. of $(n-1) \times (n-1)$ grid and so on.
+      \end{myenv}
+      \bold{n is even}:
+      \begin{myenv}
+        In this case, we will have one square of full size (side length is $(n-1)$) but not the other square in this case as $(n-1)$ is odd, then the problem can be divided into a smaller one i.e. of $(n-1) \times (n-1)$ grid and so on.
+      \end{myenv}
+      Now counting squares for $n \times n$ points grid (alternating between even and odd), let the number be $P$. \newline
+      \begin{align*}
+        S_{(n \times n)}&=2^{(n)mod2} \\
+        S_{((n-1) \times (n-1))}&=2^{(n-1)mod2} \cdot 2^2 \\
+        \vdots \\
+        S_{(2 \times 2)}&=2^{2mod2} \cdot (n-1)^2
+      \end{align*}
+      Adding all the number of squares we get the required result \bold{eq (3.3)}. \newline
+      Solving the summation we will get the results (3.4) and (3.5).
+    \end{proof}
+    Putting $n=10$ in the eq (3.4) we get the following answer.
+    \begin{align*}
+      P&=\frac{10 \cdot 9 \cdot 9}{2} \\
+      P&=405
+    \end{align*}
+  }
+  \subsection{Part (d)}{
+    We are given $n$ line segments of lengths $1,2,\dots,n$ and I have to find the number of non-degenerate triangles i.e. triplets $(a,b,c)$ from these line segments which satisfy the triangular inequality. \newline
+    For the non-degenerate triangles to exist, the value of $n$ must be atleast $4$. \newline
+    I will find the solution for $2$ different cases: \newline
+    \bold{n is even}:
+    \begin{myenv}
+      Let $a_k$ be defined as the number of non-degenerate triangles with largest line segment as $k$ and $k$ is one of its sides. \newline
+      So, we have $a_4=1,a_6=4,a_8=9\dots$ i.e.
+      \begin{align*}
+        a_k&=1+3+\dots+(k-3) \\
+        a_k&=\frac{(k-2)^2}{4}
+      \end{align*} 
+    \end{myenv}
+    \bold{n is odd}:
+    \begin{myenv}
+      Let $a_k$ be defined as the number of non-degenerate triangles with largest line segment as $k$ and $k$ is one of its sides. \newline
+      So, we have $a_5=2,a_7=6,a_9=12\dots$ i.e.
+      \begin{align*}
+        a_k&=2+4+\dots+(k-3) \\
+        a_k&=\frac{(k-3)(k-1)}{4}
+      \end{align*}
+    \end{myenv}
+    Let the number of non-degenerate triangles for $n$ be $S_n$, so we have:
+    \begin{align*}
+      S_n=a_4+a_5+\dots+a_n \\
+    \end{align*}
+    Solving the above summation by putting in the values we get the following final answer for odd and even values of $n$.
+    \begin{align}
+      S_n&=\frac{n(n-2)(2n-5)}{24},n=2m,m \in \mathbb{N} \label{eq:5} \\
+      S_n&=\frac{(n-3)(n-1)(2n-1)}{24}, n=2m+1, m \in \mathbb{N}
+    \end{align} 
+    The value of $n$ must be atleast $4$ for above results. \newline
+    \bold{Eq. (3.5)} is for \bold{Even} $n$. \newline
+    \bold{Eq. (3.6)} is for \bold{Odd} $n$.
+  }
+}
+\end{document}

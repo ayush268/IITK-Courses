@@ -1,0 +1,401 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage{changepage}
+
+\usepackage[]{algorithm2e}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm, fouriernc, mathtools}
+\usepackage{microtype}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{lightgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{grey}{rgb}{0.25,0.25,0.25}
+\newcommand{\blackb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\lightgreyb}{\color{lightgrey} \usefont{OT1}{lmss}{m}{n}}
+
+\let\bold\textbf
+\newcommand\comb[2][^n]{\prescript{#1\mkern-0.5mu}{}C_{#2}}
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+\sectionfont{\color{lightgrey}}
+\subsectionfont{\color{lightgrey}}
+\subsubsectionfont{\color{lightgrey}}
+
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\arabic{section}.\arabic{subsection}}
+\renewcommand\thesubsubsection{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{lightgrey}}
+{\thesection} {3pt} {} }
+
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@Aboxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\patchcmd{\@boxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\makeatother
+
+\title{\vspace{80mm}\lightgreyb Math for CS I/Discrete Mathematics \\
+\lightgreyb Assignment $5$ Solutions}
+\author{Ayush Bansal \\
+Roll No. 160177}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{claim}{Claim}[section]
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+\AfterEndEnvironment{theorem}{\noindent\ignorespaces}
+\renewcommand\thelemma{\arabic{section}.\arabic{lemma}}
+\renewcommand\theclaim{\arabic{section}.\arabic{claim}}
+
+\newenvironment{myenv}{\begin{adjustwidth}{1cm}{}}{\end{adjustwidth}}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Problem 1 Solution}{
+  I have to find the number of ways a committee of $n$ persons can be formed from a group of $7$ women and $4$ men. \newline
+  Choosing women or men for the committee are independent of each other and I will use this fact in later parts of this problem.
+  \subsection{Part (a)}{
+    Case of $n=5$ and committee has $3$ women and $2$ men.
+    \begin{solution}
+    Number of ways of choosing $3$ women out of $7$ women for the committee is $P_1$. \newline
+    Number of ways of choosing $2$ men out of $4$ men for the committee is $P_2$. \newline
+    The total number of ways will be just the product of $P_1$ and $P_2$ as they are independent, so we have:
+    \begin{align*}
+      P_1&=\binom{7}{3} \\
+      P_2&=\binom{4}{2} \\
+      P&=P_1*P_2 \\
+      P&=\binom{7}{3} \cdot \binom{4}{2} \\
+      P&=210
+    \end{align*}
+  \end{solution}
+  }
+  \subsection{Part (b)}{
+    Committee must have equal number of men and women. $(n>0)$
+    \begin{solution}
+    Consider choosing $i=\{1,2,3,4\}$ women and men for the committee as maximum number of men are $4$ and the number of women and men in the committee must be equal, also since the ways of choosing men or women are independent of each other, we have:
+    \begin{align*}
+      P_i&=\binom{7}{i} \cdot \binom{4}{i} \\
+      P&=\sum_{i=1}^{4} P_i \\
+      P&=329
+    \end{align*}
+  \end{solution}
+  }
+  \subsection{Part (c)}{
+    The committee has $n=4$ persons and one of them is Mr. Sharma (A man).
+    \begin{solution}
+      Since we have already chosen Mr. Sharma, we have to choose $3$ more people for the committee and it doesn't matter whether we choose women or men. \newline
+      So we have to choose $3$ people out of $10$, we have:
+      \begin{align*}
+        P&=\binom{10}{3} \\
+        P&=120
+      \end{align*}
+    \end{solution}
+  }
+  \subsection{Part (d)}{
+    The committee has $n=4$ persons and atleast $2$ are women.
+    \begin{solution}
+      The total number of ways of choosing $n=4$ persons for the committee is $P_0$. \newline
+      From this I have to choose only the cases in which atleast $2$ women are selected, so I will remove the ways to select $0$ women and $4$ men, $1$ women and $3$ men for the committee, let the cases to remove be $P_r$, so we have:
+      \begin{align*}
+        P_0&=\binom{11}{4} \\
+        P_r&=\binom{7}{0} \cdot \binom{4}{4} + \binom{7}{1} \cdot \binom{4}{3} \\
+        P&=P_0 - P_r \\
+        P&=301
+      \end{align*}
+    \end{solution}
+  }
+  \subsection{Part (e)}{
+    The committee has $n=4$ persons, two of each gender and Mr. and Mrs. Sharma cannot both be in the committee.
+    \begin{solution}
+      The total number of ways of choosing $n=4$ persons such that $2$ are women and $2$ are men is $P_0$. \newline
+      From $P_0$, I have to remove the number of cases in which Mr. and Mrs. Sharma are both placed on the committee, let these cases be $P_r$. \newline
+      For calculating $P_r$, we have to chose one man and one women as $1$ of each is already chosen, so we have:
+      \begin{align*}
+        P_0&=\binom{7}{2} \cdot \binom{4}{2} \\
+        P_r&=\binom{6}{1} \cdot \binom{3}{1} \\
+        P&=P_0 - P_r \\
+        P&=108
+      \end{align*}
+    \end{solution}
+  }
+}
+\newpage
+\section{Problem 2 Solution}{
+  \subsection{Part (a)}{
+    In this part of the question we are given $k$ colors and we have to find in how many ways we can color a graph such that it is a proper coloring. \newline
+    The answer to this question will be a polynomial in $k$ which is called chromatic polynomial $P_k(G)$ of a graph $G$.
+    \subsubsection{Part (i)}{
+      We are given the graph $G=K_5$ which is a complete graph made of $5$ nodes.
+      \begin{solution}
+      Since every node of this graph has an edge with every other node of the graph, in order to have a proper coloring, all the nodes must be of different colors otherwise it will not be a proper coloring. \newline
+      Since all nodes must be of different colors, the least possible value of $k$ must be $5$ to have a proper coloring and the polynomial $P_k(K_5)$ will be as follows:
+      \begin{align*}
+        P_k(K_5)&=\binom{k}{5} \cdot 5! \\
+        P_k(K_5)&=k(k-1)(k-2)(k-3)(k-4)
+      \end{align*}
+      The above solution follows from selecting $5$ different colors.
+    \end{solution}
+    }
+    \subsubsection{Part (ii)}{
+      We are given the graph $G=C_4$ which is a cyclic graph made of $4$ nodes (a square).
+      \begin{solution}
+        The value of $k$ must be atleast $2$ otherwise there will be no proper coloring. \newline
+        I will break the problem in $3$ cases and count the ways of the $3$ cases separately and add them. \newline
+        \bold{Case 1}: Coloring the graph in only $2$ colors.
+        \begin{myenv}
+          The graph can be colored by $2$ colors in $2$ ways, so the no. of ways of coloring in this case will be $$P_1=\binom{k}{2} \cdot 2!$$
+        \end{myenv}
+        \bold{Case 2}: Coloring the graph in $3$ colors.
+        \begin{myenv}
+          The graph can be colored by $3$ colors in $3! \cdot 2$ ways, so the no. of ways of coloring in this case will be $$P_2=\binom{k}{3} \cdot 12$$
+        \end{myenv}
+        \bold{Case 3}: Coloring the graph in $4$ colors.
+        \begin{myenv}
+          The graph can be colored by $4$ colors in $4!$ ways, so the no. of ways of coloring in this case will be $$P_3=\binom{k}{4} \cdot 4!$$
+        \end{myenv}
+        So, the total ways of coloring the graph will be just the sum of the above $3$ values.
+        \begin{align*}
+          P&=P_1+P_2+P_3 \\
+          P&=k(k-1)+2k(k-1)(k-2)+k(k-1)(k-2)(k-3) \\
+          P&=k(k-1)(k^2-3k+3) \\
+          P&=(k-1)^4+(k-1)
+        \end{align*} 
+        $P$ is the required polynomial.
+      \end{solution}
+    }
+  }
+  \subsection{Part (b)}{
+    We are given $n$ types of objects and we have to select $r$ objects from them with repetition. \newline
+    Since there are $n$ types of objects, suppose we select $x_i$ objects of $i^{th}$ type till the $x_n$, we have to select $r$ objects, so the sum of all these will be $r$, i.e. $$x_1+x_2+\dots+x_n=r$$
+    Considering the above problem, we can form factor polynomial which is $1+x+x^2+x^3\dots$ for the value of certain $x^i$, as the value of $x^i \geq 0$. \newline
+    So, the problem is to find out the coefficient of $x^r$ in $P(x)=(1+x+x^2\dots)^n$:
+    \begin{align*}
+      P(x)&=(1+x+x^2+x^3\dots)^n \\
+      P(x)&=(1-x)^{-n} \\
+      P(x)&=1+ \sum_{i=1}^{\infty} \binom{n+i-1}{i}x^i
+    \end{align*}
+    The coefficient of $x^r$ in $P(x)$ is $$P=\binom{n+r-1}{r}$$
+    $P$ is the number of ways of selecting $r$ objects from $n$ types of objects with repetition.
+  }
+}
+\newpage 
+\section{Problem 3 Solution}{
+  \subsection{Part (a)}{
+    We are given the equation $x_1+x_2+x_3+x_4=12$ and I have to find the number of possible 4-tuples $(n_1,n_2,n_3,n_4)$ such that $n_i \geq 0$ and $x_i=n_i$.
+    \subsubsection{Part (i)}{
+      \begin{solution}
+      The problem can be considered as distributing $12$ balls in $4$ containers such that the containers can also be empty. \newline
+      Since $x_i \geq 0$, we can form factor polynomial like $1+x+x^2+x^3\dots$ for each container, so the problem is to find the coefficient of $x^{12}$ in the following expression $P(x)$:
+      \begin{align}
+        P(x)&=(1+x+x^2+x^3\dots)^4 \label{eq:1} \\
+        P(x)&=(1-x)^{-4} \\
+        P(x)&=1+\sum_{i=1}^{\infty} \binom{4+i-1}{i} x^i
+      \end{align}
+      The coefficient of $x^{12}$ in $P(x)$ is $P$:
+      \begin{align*}
+        P&=\binom{12+3}{3} \\
+        P&=455
+      \end{align*}
+    \end{solution}
+    }
+    \subsubsection{Part (ii)}{
+      The problem is exactly the similar to the previous one, we just need to alter the number of balls.
+      \begin{solution}
+        Since we know $x_i \geq 1$, let $x_i'=x_i-1$, thus we have $x_i' \geq 0$, so the equation will be: \newline
+        \begin{align*}
+          x_1+x_2+x_3+x_4&=12 \\
+          (x_1-1)+(x_2-1)+(x_3-1)+(x_4-1)&=12-4 \\
+          x_1'+x_2'+x_3'+x_4'&=8
+        \end{align*}
+        The coefficient of $x^8$ in equation (3.3) is $P$:
+        \begin{align*}
+          P&=\binom{8+3}{3} \\
+          P&=165
+        \end{align*}
+      \end{solution}
+    }
+    \subsubsection{Part (iii)}{
+      The problem is exactly the same to the previous one, we just need to alter the number of balls.
+      \begin{solution}
+        Since we know $x_1 \geq 2,x_2 \geq 2,x_3 \geq 4, x_4 \geq 0$, let $x_1'=x_1-2,x_2'=x_2-2,x_3'=x_3-4,x_4'=x_4$, thus we have $x_i' \geq 0$, so the equation will be:
+        \begin{align*}
+          x_1+x_2+x_3+x_4&=12 \\
+          (x_1-2)+(x_2-2)+(x_3-4)+x_4&=12-8 \\
+          x_1'+x_2'+x_3'+x_4'&=4
+        \end{align*}
+        The coefficient of $x^4$ in equation (3.3) is $P$:
+        \begin{align*}
+          P&=\binom{4+3}{3} \\
+          P&=35
+        \end{align*}
+      \end{solution}
+    }
+  }
+  \subsection{Part (b)}{
+    There are $7$ friends say $a,b,c,d,e,f,g$ and the problem is to find the number of ways to invite a different subset of $3$ friends for dinner on $7$ successive nights such that each pair of friends are together at just one dinner.
+    \begin{solution}
+      Since there are $7$ friends and subsets of $3$ are to be formed considering that $2$ friends can be together only once, $1$ friend can go to dinner atmost $3$ times. \newline
+      Consider a friend $a$, the no. of sets of $3$ consisting $a$ as one of the member will be: $$\binom{6}{2}=15$$
+      For moving further let's assume that $3$ (maximum amount for $a$) pairs are selected as $$(a,b,c);(a,d,e);(a,f,g)$$
+      Now there can be no pair containing $a$ as one of the member and still consistent with our conditions. \newline
+      Let's make remaining $2$ pairs which contain friend $b$, there will be only $2$ ways to do that depending on the way we choose for $a$ which will be as follows $$(b,d,g);(b,e,f) \mid (b,e,g);(b,d,f)$$
+      Now there can be no pair containing $a$ or $b$ as one of the member and still consistent with our conditions. \newline
+      Let's make remaining $2$ pairs which contain friend $c$, there will only $1$ way to do that depending on the way we choose for $b$ which will be as follows $$(c,d,f);(c,e,g) \mid (c,e,f);(c,d,g)$$
+      Note the seven $3$-tuples which we have formed, these contain all the $7$ friends exactly $3$ times, so we have considered all the possible tuples which can exist by this way of counting. \newline
+      Thus, the number of ways of forming seven $3$-tuples which satisfy our initial conditions are $$15*2*1=30$$ \newline
+      Now, finally distributing there $7$ tuples into $7$ nights we get the final answer: $$P=15*2*1*7!=151200$$
+    \end{solution}
+  }
+}
+\newpage
+\section{Problem 4 Solution}{
+  \subsection{Part (a)}{
+    We are given a series $a_n$ which gives the number of partitions that add up to at most $n$. \newline
+    Let's consider another series $p_n$ which gives us the number of partitions that add up to exactly $n$, so we have $$a_n=a_{n-1}+p_n$$
+    The above expression is valid for $n\geq 2$ and adds the partitions that add up to at most $n-1$ and the number of partitions that add up to exactly $n$. \newline
+    So I will find the generating function of $a_n$ by finding the generating function of $p_n$.
+    \begin{solution}
+      We will have following initial conditions for $p_n$ and $a_n$ as $n$ is to be considered positive: 
+      \begin{align*}
+        a_0=p_0=0 \\
+        a_1=p_1=1
+      \end{align*}
+      Consider $A$ and $P$ to be generating functions of $a_n$ and $p_n$ respectively.
+      \begin{align*}
+        a_n&=a_{n-1}+p_n \\
+        \sum_{i=2}^{\infty}a_ix^i&=\sum_{i=2}^{\infty}a_{i-1}x^i+\sum_{i=2}^{\infty} p_i x^i \\
+        A-a_1x-a_0&=x(A-a_0)+P-p_1x-p_0 \\
+        A(1-x)&=P
+      \end{align*} 
+      So the above equation finally gives us:
+      \begin{align}
+        A(x)=\frac{P(x)}{1-x} \label{eq:1}
+      \end{align} 
+      Now let's calculate $P(x)$, consider the following equation:
+      \begin{align*} 
+        x_1+2x_2+3x_3+\dots&=n \\
+        \sum_{i=1}^{\infty} i \cdot x_i&=n
+      \end{align*}
+      The value of $x_i$ will give the number of partitions of size $i$ in a certain arrangement. \newline
+      So, by calculating the number of possible non-negative solutions of the above equation, we can find the number $p_n$, consider the product of factor polynomials as below $$(1+x+x^2\dots)\cdot(1+x^2+x^4\dots)\cdot(1+x^3+x^6\dots)\dots$$
+      The coefficient of $x^n$ in the above expression will be $p_n$, and coefficient of $x^0=1$ must be zero as $p_0=0$, so we have:
+      \begin{align}
+        P(x)&=-1+(1+x+x^2\dots)\cdot(1+x^2+x^4\dots)\cdot(1+x^3+x^6\dots)\dots \label{eq:2} \\
+        P(x)&=\prod_{i=1}^{\infty} (1-x^i)^{-1} -1
+      \end{align}
+      Putting value of (4.3) in (4.1), we get:
+      \begin{align*}
+        A(x)=(1-x)^{-1}\left(\prod_{i=1}^{\infty} (1-x^i)^{-1} -1 \right)
+      \end{align*}
+    \end{solution}
+  }
+  \subsection{Part (b)}{
+    This part is similar to \bold{4.3 Part (c)} of this problem, I will use the generating function derived in that part in my answer. \newline
+    Let the $3$ parts be $a,b,c$ such that $a \leq b \leq c$, also by the given condition $a+b \geq c$, since the sum of $3$ parts is $n$, we have $a+b+c=n$. \newline
+    The only difference in this part and the next one is the case of $a+b=c$, so I will calculate the generating function $P(x)$ for the case $a+b=c$ and add that to eq (4.6) to get the final generating function $A(x)$ corresponding to the sequence $a_n$.
+    \begin{solution}
+      Since $a+b=c$, putting this in $a+b+c=n$, we get $2(a+b)=n$. \newline
+      Since we know that the parts are positive integers, we have $a,b \geq 1$, so consider the following substitutions:
+      \begin{align*}
+        a&=1+x \\
+        b&=1+x+y \\
+        x,y &\geq 0
+      \end{align*}
+      The above equations are consistent with our initial conditions, also finding unique $(x,y)$ will give us a unique $(a,b,c)$, so the expression now becomes: $$4x+2y=n-4$$
+      We will calculate non-negative integral solutions of the above equations and this will give us $p_n$ (corresponding to $P(x)$) for a certain $n$.
+      Calculating the coefficient of $x^{n-4}$ in the below expression will give the value of $p_n$: $$Q(x)=(1+x^2+x^4\dots)\cdot(1+x^4+x^8\dots)$$
+      So we will shift above generating function to the right by multiplying the function by $x^4$
+      \begin{align}
+        P(x)=\frac{x^4}{(1-x^2)(1-x^4)} \label{eq:4}
+      \end{align}
+      Adding equation (4.6) to equation (4.4), we get the final answer equation (4.5).
+      \begin{align}
+        A(x)=\frac{x^4}{(1-x^2)(1-x^4)}+\frac{x^3}{(1-x^2)(1-x^3)(1-x^4)} \label{eq:5}
+      \end{align}
+      Above function $A(x)$ is the required generating function for the sequence $a_n$.
+    \end{solution}
+  }
+  \subsection{Part (c)}{
+    We are given a sequence $a_n$ which gives the number of different triangles with integral sides that add upto $n$. \newline
+    Let the sides be $a,b,c$ such that $a \leq b \leq c$, also since they form a triangle, we have $a+b>c$, since the perimeter of the triangle is $n$, $a+b+c=n$.
+    \begin{solution}
+      Since we know the sides will be a positive integer $a,b,c \geq 1$, so consider the following substitutions:
+      \begin{align*}
+        a&=1+x+z \\
+        b&=1+x+y+z \\
+        c&=1+x+y+2z \\
+        x,y,z &\geq 0
+      \end{align*}
+      The above equations are consistent with our initial conditions, also finding unique $(x,y,z)$ will give us a unique $(a,b,c)$, so the expression now becomes: $$3x+2y+4z=n-3$$
+      We will calculate non-negative integral solution of the above equations and this will give us $a_n$ for a certain $n$. \newline
+      Calculating the coefficient of $x^{n-3}$ in the below expression will give the value of $a_n$: $$P(x)=(1+x^2+x^4\dots)\cdot(1+x^3+x^6\dots)\cdot(1+x^4+x^8\dots)$$
+      So we will shift above generating function to the right by multiplying the function by $x^3$
+      \begin{align}
+        A(x)=\frac{x^3}{(1-x^2)(1-x^3)(1-x^4)} \label{eq:6}
+      \end{align}
+      Above function $A(x)$ is the required generating function for the sequence $a_n$.
+    \end{solution}
+  }
+}
+\newpage
+\section{Problem 5 Solution}{
+  We are given $3$ different sequences which are $a_n,b_n,c_n$ and the relation between them are:
+  \begin{align}
+    a_n&=a_{n-1}+b_{n-1}+c_{n-1} \label{eq:1} \\
+    b_n&=3^{n-1}-c_{n-1} \\
+    c_n&=3^{n-1}-b_{n-1} \\
+    a_1&=b_1=c_1=1
+  \end{align}
+  \begin{solution}
+    Due to similarity of equation (5.2) and (5.3), also the initial values $b_1$ and $c_1$ are same, so the series $b_n$ and $c_n$ will be exactly same. \newline
+    Let the generating function of $b_n$ be $$B=\sum_{i=1}^{\infty} b_i x^i$$ 
+    Also by putting the value of $n=2$ in (5.2), we will get $b_2=2$. \newline
+    Let's combine equation (5.2) and (5.3) and solve to find the generating function $B$.
+    \begin{align*}
+      b_n&=b_{n-2}+2 \cdot 3^{n-2} \\
+      \sum_{i=3}^{\infty} b_i x^i &= \sum_{i=3}^{\infty} (b_{i-2} x^i + 2 \cdot 3^{i-2} x^{i}) \\
+      B-b_1x-b_2x^2&=x^2B+2x^2\left(\frac{1}{1-3x}-1 \right) \\
+      B(1-x^2)&=b_1x+b_2x^2+\frac{6x^3}{1-3x} \\
+      B&=\frac{x-x^2}{(1-3x)(1-x^2)} \\
+      B&=\frac{x}{(1-3x)(1+x)} \\
+      B&=\frac{1}{4}\left(\frac{1}{1-3x} - \frac{1}{1+x}\right) \\
+    B&=\frac{1}{4}\left( \sum_{i=1}^{\infty} (3^i-(-1)^i)x^i \right)
+    \end{align*}
+    Solving the above expression we will get:
+    \begin{align}
+      b_n&=\frac{1}{4}\left( 3^n-(-1)^n \right) \label{eq:5} \\
+      c_n&=\frac{1}{4}\left( 3^n-(-1)^n \right) 
+    \end{align}
+    Let the generating function of $a_n$ be $$A=\sum_{i=1}^{\infty} a_ix^i$$
+    Putting the values from equation (5.5) and (5.6) in (5.1), solving the equations we get:
+    \begin{align*}
+      a_n&=a_{n-1}+\frac{1}{2}\left(3^{n-1}-(-1)^{n-1} \right) \\
+      A-a_1x&=xA+\frac{x}{2}\left(\sum_{i=1}^{\infty}(3^i-(-1)^i)x^i  \right) \\
+      A(1-x)&=x\left[a_1+\frac{1}{2} \left(\frac{1}{1-3x}-\frac{1}{1+x} \right) \right] \\
+      A&=\frac{x}{1-x}-\frac{x}{2(1-x^2)}+\frac{1}{4(1-3x)}-\frac{1}{4(1-x)}
+    \end{align*}
+    Solving the above expression of generating function we will get:
+    \begin{align}
+      a_n=\frac{3^n}{4}+\frac{1}{2}+\frac{(-1)^n}{4} \label{eq:7}
+    \end{align}
+\end{solution}
+}
+\end{document}

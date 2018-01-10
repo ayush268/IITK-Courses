@@ -1,0 +1,304 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage{changepage}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm, fouriernc, mathtools}
+\usepackage{microtype}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{lightgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{grey}{rgb}{0.25,0.25,0.25}
+\newcommand{\blackb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\lightgreyb}{\color{lightgrey} \usefont{OT1}{lmss}{m}{n}}
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+\sectionfont{\color{lightgrey}}
+\subsectionfont{\color{lightgrey}}
+
+\renewcommand\thesection{\arabic{section}.}
+\renewcommand\thesubsection{\thesection\arabic{subsection}}
+
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{lightgrey}}
+{\thesection} {3pt} {} }
+
+\renewcommand{\theequation}{\thesection\arabic{equation}}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@Aboxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\patchcmd{\@boxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\makeatother
+
+\title{\vspace{80mm}\lightgreyb CS203: Abstract Algebra \\
+\lightgreyb Assignment $3$ Solutions}
+\author{Ayush Bansal}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+\AfterEndEnvironment{theorem}{\noindent\ignorespaces}
+
+\newenvironment{myenv}{\begin{adjustwidth}{1cm}{}}{\end{adjustwidth}}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Problem 1 Solution}{
+  \subsection{Part 1.}{
+    I have to find and prove whether the following equation has integral solutions or not:
+    \begin{align}
+      x^3=y^2+3 \label{eq:1}
+    \end{align}
+    For proving the above fact, I will first prove the following lemma.
+    \begin{lemma}
+      If $p$ is an odd prime number then $\exists x \in \mathbb{Z}$ such that $(x^2+1)modp=0$ if and only if $p$ is of the form $4n+1$
+    \end{lemma}
+    \begin{proof}
+      Consider $p$, a prime number and $p \neq 2$, then $p$ will be of the form $4n+1$ or $4n+3$ and $\frac{p-1}{2}=2n$ and $\frac{p-1}{2}=2n+1$ respectively in either cases. \newline
+      Now consider the value of $(p-1)!$, I will do some computations on this as follows:
+      \begin{align}
+        (p-1)!&=1*2*3\dots\frac{p-1}{2}*(p-\frac{p-1}{2})\dots*(p-1) \label{eq:2} \\
+        (p-1)!&=(\frac{p-1}{2})!*(p-\frac{p-1}{2})\dots*(p-1)
+      \end{align}
+    The terms beyond $(\frac{p-1}{2})!)$ will form a polynomial in $p$ whose constant term will not be divisible by $p$, rest will be divisible by $p$. \newline
+    Now if $\frac{p-1}{2}=2n$, then the constant term will be \textbf{positive}, so using this:
+      \begin{align}
+        (p-1)!&=(\frac{p-1}{2})!*(\frac{p-1}{2})! \quad mod p \label{eq:4} \\
+        (p-1)!&=((\frac{p-1}{2})!)^2 \quad mod p
+      \end{align}
+    By using \textbf{Wilson's Theorem} (Proved in \textbf{2.1 Part 1}) we can say:
+    \begin{align*}
+      (x^2+1)mod p = 0, \quad x=(\frac{p-1}{2})!
+    \end{align*}
+    If $\frac{p-1}{2}=2n+1$, then the constant term will be \textbf{negative}, and since $x^2$ cannot be negative for integral $x$, such $x$ will not exist, hence our lemma is proved.
+  \end{proof}
+  Consider a second lemma as follows.
+  \begin{lemma}
+    The square of any odd number is of the form $8n+1$.
+  \end{lemma}
+  \begin{proof}
+    Any odd number can be written in $4$ forms which are $8n+1,8n+3,8n+5,8n+7$, considering each one by one. \newline
+    \begin{myenv}
+      \textbf{8n+1}: $(8n+1)^2=8(8n^2+2n)+1$ which is of the form $8n+1$. \newline
+      \textbf{8n+3}: $(8n+3)^2=8(8n^2+2n+1)+1$ which is of the form $8n+1$. \newline
+      \textbf{8n+5}: $(8n+3)^2=8(8n^2+2n+3)+1$ which is of the form $8n+1$. \newline
+      \textbf{8n+7}: $(8n+3)^2=8(8n^2+2n+6)+1$ which is of the form $8n+1$. \newline
+    \end{myenv}
+    Thus, the lemma is proved.
+  \end{proof}
+    Now coming to the equation (1.1) and proving the existence or non-existence of it's solutions.
+    \begin{proof}
+      Consider $x$ as even then $(y^2+3)mod8=0$ but this is not possible as $y$ is odd and $y^2mod8=1$ by \textbf{Lemma 2}. \newline
+      Thus, $x$ must be \textbf{odd} and due to this $y$ must be \textbf{even}. \newline
+      Doing following computations on the equation and putting $y=2a$:
+      \begin{align}
+        x^3+1&=y^2+4 \label{eq:6} \\
+        (x+1)(x^2-x+1)&=4(a^2+1)
+      \end{align}
+      Notice that $(x^2-x+1)$ is \textbf{odd}, let $p$ be a prime factor of $(x^2-x+1)$, then $p$ must of the form $4n+1$, as $(a^2+1)modp=0$, by \textbf{Lemma 1}. \newline
+      Thus all prime divisors of the number $(x^2-x+1)$ will be of the form $4n+1$. \newline
+      $\therefore (x^2-x+1)mod4=1$, which shows $4 \mid x^2-x$ and since $x$ is odd, $4 \mid x-1$. \newline
+      By using above results we can see that, $(x+1)mod4=2$ which means \textbf{LHS} in equation (1.7) is not divisible by $4$ but \textbf{RHS} is, which means there is no possible integral solution for the equation (1.1).
+    \end{proof}
+  }
+  \subsection{Part 2.}{
+    I have to find and prove whether the following equation has integral solutions or not:
+    \begin{align}
+      x^3=y^2+1 \label{eq:8}
+    \end{align}
+    For proving this, I will assume that $\mathbb{Z}[i]$ is a \textbf{Unique Factorization Domain}. \newline
+    \begin{proof}
+      We can re-write the above equation as:
+      \begin{align}
+        x^3=(y+i)(y-i) \label{eq:9}
+      \end{align}
+      Now there are $2$ possible cases: \newline
+      \textbf{Case 1}: $(y+i)$ and $(y-i)$ does not have a common factor.
+      \begin{myenv}
+        If there is no common factor between $(y+i)$ and $(y-i)$, then both of have will be a cube of a certain element in $\mathbb{Z}[i]$ since \textbf{LHS} in (1.9) is a perfect cube of some element in $\mathbb{Z}[i]$, which means:
+        \begin{align*}
+          y+i&=(a+ib)^3 \\
+          y+i&=a^3-3ab^2+i(3a^2b-b^3) \\
+          3a^2b-b^3&=1
+        \end{align*}
+        Since $a,b \in \mathbb{Z}$, the only possible solution for this case is $a=0,b=-1$.
+      \end{myenv}
+      \textbf{Case 2}: $(y+i)$ and $(y-i)$ have a common factor.
+      \begin{myenv}
+        If $2$ numbers have a common factor, then their difference and their sum will also have that number as a factor, using their difference we get that the only possible common factors they can have are $(1+i)$ and $(1-i)$, also $(1-i)(1+i)=2$. \newline
+        Now we can write $y+i=(1+i)^{f_1}(1-i)^{f_2}(a+ib)^{3k}$ such that $3 \mid f_1+f_2$ but $3 \nmid f_1$ and $3 \nmid f_2$ because net sum of powers in $(x+i)(x-i)$ must remain multiple of $3$ and these both are \textbf{Conjugates} of each other. \newline
+        Assuming $f_1<f_2$, we can write $x+i=2^{f_1}(1-i)^{f_2-f_1}(a+ib)^{3k}$, this gives $x+i=2(p+qi)$ or $1=2q$ but $q \in \mathbb{Z}$ which means this case has no possible solution.
+      \end{myenv}
+      Thus, by above $2$ cases, it is clear that an integral solution of equation (1.8) exists which is $x=1,y=0$.
+    \end{proof}
+  }
+}
+\section{Problem 2 Solution}{
+  \subsection{Part 1.}{
+    In this part I have to prove the following theorem:
+    \begin{theorem}[Wilson's Theorem]
+      Suppose $p$ is a prime number then:
+      \begin{align}
+        (p-1)! = -1 \quad mod p \label{eq:1}
+      \end{align}
+    \end{theorem}
+    The proof will be in $2$ cases, $p=2$ and $p \geq 3$.
+      Let's first suppose $p=2$, we can see that $(2-1)!=1$ and $(-1)mod(2)=1$, thus results holds for $p=2$. \newline
+      Now we consider that $p$ is a prime number such that $p \geq 3$.
+      Since $p$ is a prime number, the numbers $\{1,2,3\dots ,p-1\}$ form a group called ${\mathbb{Z}}_p$ under binary operation \textbf{multiplication mod p} and since it forms a group, every element will have an inverse.
+      \begin{lemma}
+        Every number in group ${\mathbb{Z}}_p$ has a unique inverse unequal to itself except for $1$ and $p-1$, where $p$ is an odd prime number.
+      \end{lemma}
+      Now, I will prove the above lemma using \textbf{Division Algorithm}.
+      \begin{proof}
+        Assume some number $a$ in group ${\mathbb{Z}}_p$ is inverse of itself, thus $a^2mod(p)=1$, and by division algorithm $a^2=np+1, n \in \mathbb{Z}$. \newline
+        Since $a$ is an integer we can rewrite the above equation as $a^2=(kp\pm 1)^2$ and thus $a=(\pm 1)mod(p)$ which gives us $2$ values of $a$ which are $1$ and $p-1$.
+      \end{proof}
+      Now going for the main proof:
+      \begin{proof}
+        Since $p \geq 3$, $p$ will be an odd prime number and thus by \textbf{Lemma 3} for the group ${\mathbb{Z}}_p$. \newline
+        Since every element $a_i$ in the group can be paired with unique unequal element $a_j$ which is it's inverse such that $(a_i*a_j)mod(p)=1$ except for $1$ and $p-1$, we get:
+        \begin{align}
+          (p-1)!&= [1*(p-1)].[a_i*a_j]\dots \label{eq:2} \\
+          (p-1)!&=(p-1)mod(p) \\
+          (p-1)!&=(-1)mod(p)
+        \end{align}
+        By (2.4), \textbf{Wilson's Theorem} is proved.
+      \end{proof}
+  }
+  \subsection{Part 2.}{
+    Now we take $p$, a prime number of the form $4n+1$ and have to prove that:
+    \begin{align}
+      x^2 \equiv -1 \quad mod p \label{eq:5}
+    \end{align}
+    \begin{proof}
+      $p=4n+1,n \in \mathbb{N}$, and thus $\frac{p-1}{2}=2n$. \newline
+      Using the result proved in \textbf{Lemma 1}, I can say $x=(\frac{p-1}{2})!$.
+    \end{proof}
+  }
+  \subsection{Part 3.}{
+    Consider a prime number $p$ of the form $4n+1$, $p$ is prime in $\mathbb{Z}$.
+    \begin{lemma}
+      $p$ is not prime in $\mathbb{Z}[i]$ if $p$ is of the form $4n+1$.
+    \end{lemma}
+    \begin{proof}
+    Since $p$ is of the form $4n+1$, by (2.5) we have some $x$ such that $(x^2+1)modp=0$, or we can say that $x^2+1=kp,k \in \mathbb{N}$. \newline
+    Now assume $p$ is a prime number in $\mathbb{Z}[i]$. \newline
+    We can write $x^2+1=(x+i)(x-i)$ and since $p \mid x^2+1$, by definition of prime in $\mathbb{Z}[i]$, $p \mid x+i$ or $p \mid x-i$. \newline
+    \textbf{Case 1.} $p \mid x+i$
+    \begin{myenv}
+      Since $p \mid x+i$, $\frac{x}{p}+\frac{i}{p} \in \mathbb{Z}[i]$ but since we know that $i$ is a unit in $\mathbb{Z}[i]$, $\frac{i}{p} \notin \mathbb{Z}[i]$, thus our statement is a \textbf{Contradiction}.
+    \end{myenv}
+    \textbf{Case 2.} $p \mid x-i$
+    \begin{myenv}
+      Same argument as that of \textbf{Case 1}.
+    \end{myenv}
+    By above 2 cases, our lemma is proved.
+    \end{proof}
+    Now we will prove that there exists integers $x,y$ and $c$ such that $x^2+y^2=cp$ and $gcd(c,p)=1$.
+    \begin{proof}
+      Since we have proved that $p$ is not a prime in $\mathbb{Z}[i]$, we consider that it is product of 2 numbers from $\mathbb{Z}[i]$. \newline
+      Let $p=(x+iy)(a+ib)$, doing computations on it and equating imaginary part to $0$, we get:
+      \begin{align}
+        p&=(ax-by)+i(ay+bx) \label{eq:6} \\
+        ay+bx&=0 \\
+        \frac{a}{b}&=-\frac{x}{y} \\
+        kp&=x^2+y^2, k=\frac{x}{a}
+      \end{align}
+      Putting $k=1$ in the above equation, we get $p*1=x^2+y^2, x,y \in \mathbb{Z}$ and $gcd(1,p)=1$ and so the proof is complete
+    \end{proof}
+  }
+  \subsection{Part 4.}{
+    We are given that $p$ is prime number such that $x^2+y^2=cp$, where $x,y$ and $c$ are integers and $gcd(c,p)=1$. \newline
+    I have to prove that $p$ is not a prime in $\mathbb{Z}[i]$. \newline
+    \begin{proof}
+      Assume that $p$ is a prime in $\mathbb{Z}[i]$. \newline
+      Since $cp=x^2+y^2$, we can write it as $cp=(x+iy)(x-iy)$, since $p \mid (x+iy)(x-iy)$, by definition of prime in $\mathbb{Z}[i]$, either $p \mid (x+iy)$ or $p \mid (x-iy)$. \newline
+      Considering either of the both cases we get that $\frac{x}{p},\frac{y}{p} \in \mathbb{Z}[i]$ and since $x,y \in \mathbb{Z}$, also units of $\mathbb{Z}[i]$ are $\pm1,\pm i$, and $p \mid x$ and $p \mid y$. \newline
+      Using above result, $x=ap$ and $y=bp$, $a,b \in \mathbb{Z}$, putting these values in our original equation we get:
+      \begin{align}
+        cp=b^2p^2+a^2p^2 \label{eq:10} \\
+        c=p(b^2+a^2)
+      \end{align}
+      Since equation (2.11) is a \textbf{Contradiction} to the fact that $gcd(c,p)=1$, thus $p$ is not a prime in $\mathbb{Z}[i]$.
+    \end{proof}
+  }
+  \subsection{Part 5.}{
+    We are given a prime number $p$ which is prime in $\mathbb{Z}$ but not in $\mathbb{Z}[i]$. \newline
+    I have to prove that $p=a^2+b^2$ and $a,b \in \mathbb{Z}$.
+    \begin{proof}
+      Since $p$ is not a prime in $\mathbb{Z}[i]$, we can write $p$ as $p=(a+ib)(x+iy)$, where $a,b,x,y$ are integers. \newline
+      Now doing the same computations done in (2.6),(2.7),(2.8) and (2.9), putting $k=1$, we get:
+      \begin{align*}
+        p=x^2+y^2, \quad x,y \in \mathbb{Z}
+      \end{align*}
+      The above equation is the one which I had to prove and so my proof is complete.
+    \end{proof}
+  }
+  \subsection{Part 6.}{
+    We are given that $p$ is a prime number in $\mathbb{Z}$ and is of the form $4n+1$. \newline
+    I have to prove that $p=a^2+b^2$, where $a,b \in \mathbb{Z}$.
+    \begin{proof}
+      Using \textbf{Lemma 2}, we can say that since $p$ is of the form $4n+1$, $p$ will not be a prime in $\mathbb{Z}[i]$. \newline
+      Since $p$ is not a prime in $\mathbb{Z}[i]$, from the proof of \textbf{2.5 Part 5.} we can say that $p=a^2+b^2$ for some integers $a$ and $b$, which concludes our proof.
+    \end{proof}
+  }
+}
+\newpage
+\section{Problem 3 Solution}{
+  \subsection{Part 1.}{
+    We are given a ring $R$ such that $x^2=x,\forall x \in R$. \newline
+    I have to prove that the ring $R$ is commutative i.e. $\forall a,x \in R$ we have $ax=xa$.
+    \begin{proof}
+      Let $a,x \in R$ be two elements then, $a+x$ and $(a+x)^2$ will also lie in the ring and they will satisfy:
+      \begin{align}
+        (a+x)^2&=a+x \label{eq:1} \\
+        a^2+xa+ax+x^2&=a+x \\
+        xa&=-ax
+      \end{align}
+      Now take some element $-m$ and since we know that $x^2=x, \forall x \in R$, we have $(-m)^2=-m$, also $(-m)^2=m^2=m$, $\therefore m=-m$. \newline
+      By combining above result with (3.3), we have $ax=xa$ and the ring $R$ is \textbf{Commutative}.
+    \end{proof}
+  }
+  \subsection{Part 2.}{
+    For the proof of this part, I will first prove the following \textbf{Lemma 5}:
+    \begin{lemma}
+      $Z/2Z \cong Z_2$, i.e. there are 2 elements in $Z/2Z$ which are $\{0,1\}$.
+    \end{lemma}
+    \begin{proof}
+      $Z$ is the group of all integers under operation "$+$", and $2Z$ is the group of all \textbf{even} integers under same operation which we can get my multiplying each and every integer in $\mathbb{Z}$ by $2$. \newline
+      Thus we can write set $O$ of all \textbf{odd} integers as $O=\{1+x \mid x \in 2Z\}$ and set $E$ of all even integers as $E=\{0+x \mid x \in 2Z\}$ and set $E+O=\mathbb{Z}$. \newline
+      Thus, the \textbf{quotient group} $Z/2Z$ contains $2$ elements $\{0,1\}$ and operation for this group is \textbf{addition mod 2}.
+    \end{proof}
+    Now I will prove that for the type of ring specified in \textbf{3.1 Part 1}, the only possible ring which is also an integral domain is $Z/2Z$.
+    \begin{proof}
+      Consider an element $x \in R$, then we know that $x^2=x$, taking $1$ as the multiplicative identity of the ring $R$ and doing some computations we have:
+      \begin{align*}
+        x^2&=x.1 \\
+        x^2-x.1&=0
+      \end{align*}
+      Since "Addition" is distributive over "Multiplication" in a ring, we can write above equation as:
+      \begin{align}
+        x(x-1)&=0 \label{eq:4} \\
+        \therefore x&=0,1
+      \end{align}
+      Since, only $2$ elements i.e $\{0,1\}$ can be in this ring, by \textbf{Lemma 3}, the ring is $Z/2Z$ or $Z_2$.
+    \end{proof}
+  }
+}
+\end{document}

@@ -1,0 +1,278 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage{changepage}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm, fouriernc, mathtools}
+\usepackage{microtype}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{lightgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{grey}{rgb}{0.25,0.25,0.25}
+\newcommand{\blackb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\lightgreyb}{\color{lightgrey} \usefont{OT1}{lmss}{m}{n}}
+
+\let\bold\textbf
+\newcommand\comb[2][^n]{\prescript{#1\mkern-0.5mu}{}C_{#2}}
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+\sectionfont{\color{lightgrey}}
+\subsectionfont{\color{lightgrey}}
+
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\arabic{section}.\arabic{subsection}}
+
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{lightgrey}}
+{\thesection} {3pt} {} }
+
+\renewcommand{\theequation}{\thesection\arabic{equation}}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@Aboxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\patchcmd{\@boxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}
+\makeatother
+
+\title{\vspace{80mm}\lightgreyb CS203: Abstract Algebra \\
+\lightgreyb Assignment $4$ Solutions}
+\author{Ayush Bansal \\
+Roll No. 160177}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{claim}{Claim}[subsection]
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+\AfterEndEnvironment{theorem}{\noindent\ignorespaces}
+\renewcommand\thelemma{\arabic{section}.\arabic{lemma}}
+
+\newenvironment{myenv}{\begin{adjustwidth}{1cm}{}}{\end{adjustwidth}}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Problem 1 Solution}{
+  \subsection{Part 1}{
+    We are given a commutative ring $R$. This ring contains nilpotent elements i.e. $x^n=0,x \in R$ for a certain positive integer $n$. \newline
+    I have to prove that set of all nilpotent elements of a ring $R$ forms an ideal which is known as \bold{nilradical} of R.
+    \begin{proof}
+      Consider $2$ nilpotent elements $x$ and $y$ such that $x^m=0$ and $y^n=0$, let these elements belong to an ideal $I$, Now we consider the $2$ properties of ideals. \newline
+      \bold{1.} If $a \in I,b \in I \Rightarrow a+b \in I$:
+      \begin{myenv}
+        Let $x+y=k$, raising power on both sides to $m+n$ which gives us the following equations when expanded by binomial expansion.
+        \begin{align*}
+          k^{m+n}=x^{m+n}+\comb[m+n]{1}x^{m+n-1}y+\dots+y^{m+n}
+        \end{align*}
+        The above equation shows that $k^{m+n}=0$ and thus $k$ is nilpotent which means $k \in I$.
+      \end{myenv}
+      \bold{2.} If $a \in I,b \in R \Rightarrow ab \in I$:
+      \begin{myenv}
+        Let $a$ be an element of ring $R$, multiplying $x$ and $a$ and raising the power to $m$ we get $x^ma^m=0$ since $x^m=0$, which means that $xa \in I$ as $xa$ is nilpotent.
+      \end{myenv}
+      By above $2$ properties, the proof is complete.
+    \end{proof}
+  } 
+  \subsection{Part 2}{
+    A set $S$ is defined such that it is the intersection of all the prime ideals of the ring $R$. \newline
+    I have to prove that set $S$ contains \bold{nilradical} of $R$.
+    \begin{proof}
+      Let $x$ be an element from the nilradical of $R$, such that $x^n=0$. \newline
+      Consider a prime ideal $P$, I will show that $x \in P$ which will in turn prove our claim that each nilpotent element of $R$ will lie in each and every prime ideal. \newline
+      We know that $x^n=0$, $\because$ $P$ is a prime ideal, $0 \in P$ which means $x^n \in P$ or we can say $x \cdot x^{n-1} \in P$ and by \bold{definition of prime ideal}, $x \cdot x^{n-1} \in P$ means either $x \in P$ or $x^{n-1} \in P$, if first is true then we are done otherwise we do same thing with $x^{n-1} \in P$ as follows until $x \in P$:
+      \begin{align*}
+      &x^n \in P \Rightarrow x \in P \parallel x^{n-1} \in P \\
+        &x^{n-1} \in P \Rightarrow x \in P \parallel x^{n-2} \in P \\
+        &\vdots \\
+        &x^2 \in P \Rightarrow x \in P.
+      \end{align*}
+      Thus by above equations it is clear that every nilpotent element will be there in each and every prime ideal.
+    \end{proof}
+  }
+  \newpage
+  \subsection{Part 3}{
+    Assume $x$ is not a nilpotent element and consider the following relation:
+    \begin{align*}
+      \mathcal{Y}=\{I \mid I \; is \; an \; ideal \; of \; R \; and \forall n \in {\mathbb{Z}}_{>0},x^n \notin I \}
+    \end{align*}
+    I have to prove that $\mathcal{Y}$ forms a partially ordered set w.r.t. set inclusion operation.
+    \begin{proof}
+      Firstly this set will be non-empty as there will be atleast zero ideal $(0)$ in the set. \newline
+      The elements of the set $\mathcal{Y}$ are ideals of $R$, we will see the relation of set inclusion operation in this set, consider the following $3$ properties: \newline
+      \bold{Reflexivity}: Each element is comparable to itself.
+      \begin{myenv}
+        Consider an ideal $I \in \mathcal{Y}$, since $I \subseteq I$, the property is satisfied.
+      \end{myenv}
+      \bold{Anti-symmetry}: No two different elements precede each other.
+      \begin{myenv}
+        Consider ideals $I_1,I_2 \in \mathcal{Y}$, $I_1 \subseteq I_2$ and $I_2 \subseteq I_1$ which implies $I_1=I_2$, thus this property is also satisfied.
+      \end{myenv}
+      \bold{Transitivity}: The start of a chain of precedence relations must precede the end of the chain.
+      \begin{myenv}
+        Consider ideals $I_1,I_2,I_3 \in \mathcal{Y}$, $I_1 \subseteq I_2$ and $I_2 \subseteq I_3$ which implies $I_1 \subseteq I_3$, thus the final property is satisfied.
+      \end{myenv}
+      By above three properties, we can say by \bold{definition of Poset}, that the set $\mathcal{Y}$ is a \bold{Partially Ordered Set}.
+    \end{proof}
+  }
+  \subsection{Part 4}{
+    We have to work on the same set $\mathcal{Y}$ given in the last part. \newline
+    I have to prove that $\mathcal{Y}$ has a maximal element.
+    \begin{proof}
+      I will first start by proving 2 properties of the set $\mathcal{Y}$.
+    \begin{claim}
+      Set $\mathcal{Y}$ is non-empty.
+    \end{claim}
+    \begin{proof}
+      Firstly, since $x$ is not nilpotent, $x^n \neq 0$ for any $n$, so $x^n \notin (0)$ for any $n$, thus there is atleast one element in the set which is the \bold{zero ideal} $(0)$, so the set is non-empty.
+    \end{proof}
+    \begin{claim}
+      Any \bold{chain of ideals} in $\mathcal{Y}$ has an upper bound in $\mathcal{Y}$.
+    \end{claim}
+    \begin{proof}
+      Let $C$ be a chain of ideals in $\mathcal{Y}$, now take the union of all the ideals in the this chain which will give us an ideal of $R$, also since the powers of the elements in this ideal will remain the same they were before in the chain because we are just taking the union and not manipulating the elements. \newline
+      By above arguments we can see that the union of all the ideals in a chain $C$ will be an ideal in $\mathcal{Y}$ and this \bold{union} will be our \bold{upper bound} of chain $C$.
+    \end{proof}
+    Hence, by using the proven claims we can apply the following \bold{Zorn's Lemma}:
+    \begin{lemma}[Zorn's Lemma]
+      Suppose a partially ordered set $P$ has the property that every chain in $P$ has an upper bound in $P$. Then the set $P$ contains at least one maximal element.
+    \end{lemma}
+    Thus, by above lemma, it is clear that set $\mathcal{Y}$ will have a \bold{maximal element}.
+  \end{proof}
+  }
+  \subsection{Part 5}{
+    Continuing from where I left off in the last part. \newline
+    I have to prove that every maximal element in $\mathcal{Y}$ is a prime ideal.
+    \begin{proof}
+      Since we have proven in the last part that $\mathcal{Y}$ has atleast one maximal element, let the \bold{maximal element} of $\mathcal{Y}$ be $P$.
+      \begin{claim}
+        Let $a,b \in R$ such that $a,b \notin P$, this implies that $ab \notin P$
+      \end{claim}
+      \begin{proof}
+        Since $a \notin P$, the ideal generated by $P$ and $a$ i.e. $(P,a)$ must be strictly greater than $P$ i.e. $P \subset (P,a)$, but $P$ is maximal in the poset $\mathcal{Y}$, so $(P,a)$ cannot be in the set $\mathcal{Y}$. \newline
+        Now by definition of the set $\mathcal{Y}$ we can have a positive integer $m$ such that $x^m \in (P,a)$, also $x^n \in (P,b)$ for some positive integer $n$, so it can easily be seen that $x^{m+n} \in (P,ab)$ (here $x$ is not a nilpotent element), which is an ideal generated by $P$ and $ab$. \newline
+        Thus, $(P,ab) \notin S$ and so $P \subset (P,ab)$ or $(P,ab)$ is strictly greater than $P$, which implies that $ab \notin P$ which proves my claim.
+      \end{proof}
+      By above claim we can see that $P$ is a prime ideal.
+    \end{proof}
+  }
+  \subsection{Part 6}{
+    I have to finally prove the following final claim:
+    \begin{claim}
+      All elements of set $S$ which is the intersection of all the prime ideals of the ring $R$ are \bold{nilpotent} elements.
+    \end{claim}
+    \begin{proof}
+      Now, we will put everything what we have proved together, Since the set $P$ which is the maximal element of $\mathcal{Y}$ is a prime ideal and $x \notin P$ where $x$ is not a nilpotent element, we can conclude that $x \notin \bigcap P$, the intersection of all prime ideals of $R$ which is set $S$. \newline
+      Thus, finally only elements which will remain in $S$ will be the \bold{nilpotent} elements.
+    \end{proof}
+  }
+}
+\newpage
+\section{Problem 2 Solution}{
+  We are given a commutative ring $R$, one ideal $I$ of the ring $R$, a set $\mathcal{Y}$ of ideals of $R$ such that $\mathcal{Y}=\{U \mid U \; is \; an \; ideal \; of \; R \; and \; I \subseteq U \}$, a set $\mathcal{Y}'$ be a set of all ideals of $R/I$.
+  \begin{claim}
+    There exists a bijection $f:\mathcal{Y}\rightleftarrows \mathcal{Y}'$.
+  \end{claim}
+  \begin{proof}
+    Firstly, we are given a subring $R/I$ of the ring $R$ such that elements of this subring are of the form $x+I \mid x \in R$. \newline
+    Consider a function $f$ which takes each and every element of ideal $U \in \mathcal{Y}$, adds an element of ideal $I$ to it i.e. converts each element to a set of elements $U'=\{a+I \mid a \in U\}$, i.e. $f(U)=U'$. \newline
+    I am going to prove the claim via $3$ lemmas.
+    \begin{lemma}
+      Set $U'=\{a+I \mid a \in U\}$, where $U \in \mathcal{Y}$ is an \bold{ideal} of the subring $R/I$.
+    \end{lemma}
+    \begin{proof}
+      Looking at both properties of ideals: \newline
+      \bold{1.} If $a+I \in U',b+I \in U' \Rightarrow a+b+I \in U'$:
+      \begin{myenv}
+        Consider $a,b \in U, U \in \mathcal{Y}$, since $U$ is an ideal $a+b \in U$, thus $a+I,b+I \in U'=f(U) \Rightarrow a+b+I \in U'=f(U)$, where $a+b+I=a+I+b+I$.
+      \end{myenv}
+      \bold{2.} If $a+I \in U',x+I \in R/I \Rightarrow ax+I \in U'$:
+      \begin{myenv}
+        Consider $a \in U, U \in \mathcal{Y}$ and $x \in R$, since $U$ is an ideal $ax \in U$, thus $a+I \in U'=f(U) \Rightarrow ax+I \in U'=f(U)$, where $ax+I=(a+I)*(x+I),x+I \in R/I$.
+      \end{myenv}
+      Thus, the set $U'$ satisfies both properties for being an ideal of $R/I$.
+    \end{proof}
+    By above lemma, all the images of $U$ under the function $f$ are ideals in ring $R/I$.
+    \begin{lemma}
+      The function $f:\mathcal{Y} \rightarrow \mathcal{Y}'$ is \bold{one-one}, i.e. there is an \bold{injection} from set $\mathcal{Y}$ to $\mathcal{Y}'$.
+    \end{lemma}
+    \begin{proof}
+      Let us consider $2$ different ideals $U,V \in \mathcal{Y}$ such that $U \ne V$, which means that there is some element $a \in U$ and $a \notin V$. \newline
+      Assume that $f(U)=f(V)=U'$, thus $a+I \in U'$ but $a \notin V$ which means $\exists b \in V$ such that $a\ne b,b+I=a+I\Rightarrow a-b \in I$, but $I \subseteq V \Rightarrow a-b \in V$, since $b \in V \Rightarrow a \in V$ which is a \bold{contradiction} to our assumption. \newline
+      Thus, we cannot assume $U \ne V,f(U)=f(V)$ and the result which holds is $U \ne V \Rightarrow f(U) \ne f(V)$.
+    \end{proof}
+    The above lemma proves that function $f$ is \bold{injective}, the last lemma which remains is:
+    \newpage
+    \begin{lemma}
+      The function $f:\mathcal{Y}\rightarrowtail\mathcal{Y}'$ is \bold{onto}, i.e. there is a \bold{surjection} from set $\mathcal{Y}$ to $\mathcal{Y}'$.
+    \end{lemma}
+    \begin{proof}
+      Since we have already proven that the function $f$ is injective by \bold{Lemma 2.2}, we can have a \bold{partial} function $f^{-1}=g$, if we show $g$ is complete, we will have a pre-image for every element in $\mathcal{Y}'$ and thus the function will be surjective. \newline
+      \bold{Proving $g(U')=U \supseteq I$}:
+      \begin{myenv}
+        Consider $a,b \in U$ such that $a+I,b+I \in U'$ and $a+I=b+I$, thus $a-b \in I$, also we know that $U'$ is an ideal, thus $a-b + I \in U'$ then $a-b \in U$. \newline
+        Now when we fix one of $a$ or $b$ and vary the other, by above arguments we can see that whenever $a-b \in I \Rightarrow a-b \in U$ which means $I \subseteq U$.
+      \end{myenv}
+      \bold{Proving $g$ is complete}:
+      \begin{myenv}
+        Consider 2 elements $a+I,b+I \in U'$, since we know $U'$ is an ideal of ring $R/I$, $a+b+I \in U'$, now we define $f^{-1}(U')=g(U')=\{a \mid a+I \in U', a \in R\}$. \newline
+        Since $U'$ is an ideal of ring $R/I$, $a+I \in U', a \in R$ and $g(U') \subseteq R$, since $a+I,b+I,a+b+I \in U' \Rightarrow a,b,a+b \in U$. \newline 
+        Consider $a+I \in U'$ and $x+I \in R/I,x \in R$, then $(a+I)*(x+I)=ax+I \in U' \Rightarrow ax \in U$, so by these arguments the function $g$ is complete.
+      \end{myenv}
+    \end{proof}
+    By the results of above three lemmas, it is clear that the function we defined is \bold{injective} as well as \bold{surjective} which proves that it is \bold{bijective}.
+  \end{proof}
+}
+\newpage
+\section{Problem 3 Solution}{
+  \subsection{Part 1}{
+    We are given $R$ which is a \bold{Noetherian} ring.
+    \begin{claim}
+      Every non-unit element of ring $R$ is contained in a maximal ideal.
+    \end{claim}
+    \begin{proof}
+      Consider an ideal $(a)$, since we know that element $a$ is not a unit, this ideal will not contain $1$ as element i.e. it does not form the whole ring. \newline
+      Now we have to check whether if we can make a bigger ideal $I_2$ which contains the whole $(a)$ or not such that, that ideal is not the complete ring. \newline
+      If we cannot do it, we are done as $(a)$ is the required maximal ideal, if we can make it bigger then we will get some ideal $I_2$ such that $I_2$ does not form the complete ring but contains all elements of the ideal $(a)$. \newline
+      We will keep doing this until we get a maximal ideal:
+      \begin{align*}
+        (a) \subset I_2 \subset I_3 \subset I_4 \subset \dots
+      \end{align*}
+      Let $(a)=I_1$ and suppose the above sequence is infinite, we define $I={\bigcap}_{i\geq1}I_i$. Set $I$ is also an ideal of $R$ as if $a,b \in I$ then $a,b \in I_j$ for some $j$, then $a+b \in I_j \subseteq I$ and if $a \in I$ then $a \in I_j$, then $ab \in I_j \subseteq I, b \in R$. \newline
+      Since $R$ is \bold{Noetherian}, $I$ is finitely generated. Let it's generators be $a_1, a_2, \dots, a_k$, then $\exists j$ such that $a_1,a_2,\dots,a_k\in I_j$, then $I=(a_1)+(a_2)+\dots+(a_k) \subseteq I_j$. Hence $I=I_j$, a \bold{contradiction}. \newline
+      Thus, the sequence above is finite and thus $\exists I_j$ which is a maximal ideal and contains element $a$.
+    \end{proof}
+  }
+  \subsection{Part 2}{
+    \begin{proof}
+      \bold{Firstly,} \newline
+        We consider that $x \in S$, where $S$ is the intersection of all maximal ideals of ring $R$, now assume $1-x$ is not a unit in the ring $R$, thus by proof of \bold{3.1 Part 1}, $1-x$ is contained in a maximal ideal $m$ of $R$. But we know that $x \in S \subseteq m$, we have $1-x \in m \Rightarrow 1 \in m$ which is \bold{false}. \newline
+        Thus, our assumption is wrong and $1-x$ will be a unit. \newline
+      \bold{Conversely,} it is \bold{false}, I am going to give a counter example to prove this \newline
+      Consider the ring of integers $\mathbb{Z}$, I first make the following claim.
+      \begin{claim}
+        Ring of integers $\mathbb{Z}$ is \bold{Noetherian}.
+      \end{claim}
+      \begin{proof}
+        We first see that $\mathbb{Z}$ is \bold{Principal ideal domain} as all the ideals in the ring $\mathbb{Z}$ are principal ideals.
+        We can show ring $\mathbb{Z}$ to be \bold{PID} by using \bold{Euclid's GCD Algorithm}, consider $a,b \in I$, where $I$ is an ideal, thus using $gcd(a,b)=as+bt \in I$, we will keep doing this to get a simplest number which will produce all the elements of the ideal. \newline
+        By this we can see that each and every ideal is principal ideal and it is finitely generated, $2$ elements with $gcd(a,b)=1$ will generate the entire ring.
+      \end{proof}
+      We can say that $(3)$ is a maximal ideal of the ring $\mathbb{Z}$ as any other number which is not in this ideal is of the form $3n+1,3n+2$ and taking any $1$ of them we get $3n+1-3n=1,3n+3-3n-2=1$ which gives $(1)$ in the ideal which will form the whole ring. \newline
+      Now consider $x=2$ which gives $1-2=-1$ and $-1$ is a unit in the ring $\mathbb{Z}$ but consider maximal ideal $(3)$ of the ring $\mathbb{Z}$, $x$ does not lie in this ideal and thus $x \notin S$ which proves that statement is \bold{false}. \newline
+      Thus, the above statement should be - \bold{"Prove that $x \in S$ if $1-x$ is a unit in $R$".}
+    \end{proof}
+  }
+}
+\end{document}
