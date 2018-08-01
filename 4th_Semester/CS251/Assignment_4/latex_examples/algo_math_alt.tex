@@ -1,0 +1,138 @@
+%\documentclass[a4paper, 10pt]{article}
+\documentclass[a4paper, 10pt,twocolumn]{article}
+
+\usepackage{amsmath}
+\usepackage{lipsum}
+\usepackage{algorithm2e}
+%\usepackage{algorithm}
+%\usepackage{algpseudocode}
+
+
+\title{Latex Algorithm and Equations}
+\author{Debadatta Mishra}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+\lipsum[15]
+\end{abstract}    
+\section{Introduction}
+\lipsum
+\section{Algorithm}
+
+\begin{algorithm}
+\SetAlgoLined
+\KwIn{$A[0..N-1]$: Array of integers}
+\KwOut{$A[0..N-1]$: Sorted array of integers}
+$i \leftarrow$ 1 \;
+\While {$i <  N$}{
+    $j \leftarrow i$ \;
+    Iterate to find the place for this element in the sorted array \;
+   \While {$j > 0$ and $A[j-1] > A[j]$}{
+         swap($A[j]$, $A[j-1]$)\;
+         $j \leftarrow j -1$ \;
+   }
+   $i \leftarrow i + 1$ \;
+   
+    
+}
+
+\label{algo:ins_sort}
+\caption{Sort an array using insertion sort}
+\end{algorithm}
+
+An example of writing algorithms is shown above.
+Another way to write algorithms follow.
+
+%\begin{algorithm}
+%  \caption{Another way to write insertion sort}
+%  \label{algo:ins_sort1}
+%  \begin{algorithmic}[1]
+%     \Procedure{InsertionSort}{A[0..N]}\newline
+%     \Comment{A is an array of N integers}
+%      \State $i \leftarrow$ 1
+%      \While {($i <  N$)}
+%          \State $j \leftarrow i$ \newline
+%           \Comment{Iterate to find the place for this element in the sorted array}
+%         \While {($j > 0$ and $A[j-1] > A[j]$)}
+%            \State \textit{swap}($A[j]$, $A[j-1]$)
+%            \State $j \leftarrow j -1$ 
+%         \EndWhile
+%      \State $i \leftarrow i + 1$
+%      \EndWhile
+%     \EndProcedure 
+%  \end{algorithmic}
+%\end{algorithm}
+
+\section{Math and Equations}
+Some basic trigonometric identities are as follows,
+\begin{equation}
+\sin^2\theta + \cos^2\theta = 1
+\end{equation}
+
+\begin{equation*}
+\sin(\alpha + \theta) = \sin \alpha \cos \theta + \cos \alpha \sin \theta
+\end{equation*}
+
+\indent
+\begin{align}
+\sin(\frac{\pi}{2} -\theta) &= \cos\theta \\
+1 + \tan^2 \theta &= \sec^2 \theta\\
+1 + \cot^2 \theta &= \csc^2 \theta
+\end{align}
+
+Now let us write some equations from calculus.
+\begin{equation*}
+\lim_{x \to \infty} \frac{\sin x}{x} = 1
+\end{equation*}
+
+\begin{align*}
+\sum_{i=1}^n i^2 &= \frac{1}{2} n (n+1) \\
+\int_0^{\frac{\pi}{2}} \cos\theta\,d\theta &= \sin\theta\Big|_0^\frac{\pi}{2} \\
+  &= \sin\frac{\pi}{2} - \sin 0 \\
+  &= 1 \\
+\end{align*}
+If  $f(x) = x^2 + 2x + 1$, \\ 
+Then  $\frac{df(x)}{dx} = 2x + 2$ 
+\section{Conclusion}
+\lipsum[30]
+\begin{itemize}
+\item Item 1 is here
+\item Item 2 is here
+\item Item 3 is here
+\end{itemize}
+
+\begin{itemize}
+\item[{\bf CS251:}] Is this course really useful? Some students consider this course to
+                    be heavy considering it is just a 6 credit course. Hang on! You will 
+                    get another chance to redeem your selves.
+\item[{\bf CS330:}] Operating Systems is a old concept, but still we are required to study it! 
+                    Concepts like virtualization---Xen~\cite{xen}, VMWare~\cite{vmware}--- are
+                    making OS concepts relevant again. Have you heard about some advanced OS features like 
+                    application containers like LXC~\cite{lxc} and Docker~\cite{docker}?   
+\end{itemize}
+
+
+\begin{thebibliography}{25}
+\bibitem{xen}
+Paul Barham, Boris Dragovic, Keir Fraser, Steven Hand, Tim Harris, Alex Ho, Rolf Neugebauer, Ian Pratt, and Andrew Warfield
+\textit{Xen and the art of virtualization}
+In Proceedings of the nineteenth ACM symposium on Operating systems principles (SOSP), 2003
+
+\bibitem{vmware}
+Carl A. Waldspurger
+\textit{Memory resource management in VMware ESX server}
+In Proceedings of USENIX OSDI, 2002
+
+
+\bibitem{lxc}
+\textit{Linux Containers: Infrastructure for container projects}
+https://linuxcontainers.org/
+
+
+\bibitem{docker}
+\textit{Docker}
+https://www.docker.com/
+
+\end{thebibliography}
+\end{document}

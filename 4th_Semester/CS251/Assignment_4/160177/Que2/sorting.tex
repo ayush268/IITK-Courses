@@ -1,0 +1,150 @@
+\documentclass[10pt, twocolumn, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{float}
+
+\let\bold\textbf
+\let\ital\textit
+\let\smca\textsc
+\let\cour\texttt
+\newtheorem{theorem}{Theorem}
+
+
+\title{Comparison Based Sorting Algorithms}
+\author{Ayush Bansal}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This document presents a brief discussion on sorting algorithms. Algorithms for \cour{Quicksort} is provided in this document and its working is explained. Further, a proof of lower bounds on sorting is presented in this document. Most of the content presented here is created by referring and reproducing contents from one of the widely followed book on Algorithms by Cormen et al.~\cite{cormen}. \bold{We do not claim originality of this work.} This document is prepared as part of an assignment for the Software Lab Course (CS251) to learn \LaTeX.
+
+\end{abstract} 
+\noindent \fbox{
+  \parbox{47.5ex}{
+      Declaration: I have prepared this document using \LaTeX without any unfair means. Futher, while the document is prepared by me, I do not claim the ownership of the ideas presented in this document.
+    }
+  }
+\section{Introduction}
+Sorting is one of the most fundamental operations in computer science useful in numerous applications. Given a sequence of numbers as input, the output should provide a non-decreasing sequence of numbers as output. More formally, we define a sorting problem as follows~\cite{cormen},\newline
+\bold{Input:} A sequence of $n$ numbers $\langle a_1,a_2,. . .,a_n\rangle$.\newline
+\bold{Output:}  A reordered sequence (of size $n$) $\langle a_1',a_2',. . .,a_n'\rangle$ of the input sequence such that $a_1' \leq a_2' \leq . . . \leq a_n'$.\newline
+Consider the following example. Given an input sequence $\langle8,34,7,9,15,91,15\rangle$, a sorting algorithm should return $\langle7,8,9,15,15,34,91\rangle$ as output. \newline
+\indent A fundamental problem like sorting has attracted many researchers who contributed with innovative algorithms to solve the problem of sorting \ital{efficiently}~\cite{martin}. Efficiency of an algorithm depends on primarily on two aspects,
+\begin{itemize}
+  \item\bold{Time Complexity} is a formalism that captures running time of an algorithm in terms of the input size. Normally, \ital{asymptotic} behavior on the input size is used to analyze the time complexity of algorithms.
+  \item\bold{Space complexity} is a formalism that captures amount of memory used by an algorithm in terms of input size. Like time complexity analysis, asymptotic analysis is used for space complexity.
+\end{itemize}
+In the branch of algorithms and complexity in computer science, space complexity takes a back seat compared to time complexity. Recently, another parameter of computing i.e., energy consumption has become popular. Roy et al.~\cite{roy} proposed an energy complexity model for algorithms. In this document, we will deal with time complexity of sorting algorithms.\newline
+\indent One class of algorithms which are based on \ital{element comparison} are commonly known as \ital{comparison based sorting algorithms}. In this document we will provide a brief overview of \cour{Quicksort}, a commonly used comparison based sorting algorithm~\cite{hoare}. Quicksort is a sorting algorithm based on \ital{divide-and-conquer} paradigm of algorithm design. Further, we will derive the lower bound of any comparison based sorting algorithm to be $\Omega(n\:$log$_2\:n)$ for an input size of $n$.
+
+\section{Quicksort}
+Quicksort is designed as a three-step divide-and-conquer process for sorting an input sequence in ~an array~\cite{cormen}. For any given subarray, $A[i..j]$, the process is as follows,\newline
+\bold{Divide:} The array $A[i..j]$ is partitioned into two subarrays $A[i..k]$ and $A[k+1..j]$ such that all elements in $A[i..k]$ is less than or equal to all elements in $A[k+1..j]$. A partitioning procedure is called to determine $k$ such that at the end of partitioning, the element at the $k^{th}$ position (i.e., $A[k]$) does not change its position in the final output array.
+\newpage
+\begin{algorithm}
+  \caption{Partition procedure of \cour{Quicksort} algorithm.}
+  \label{algo:partition}
+  \begin{algorithmic}[1]
+    \Procedure{Partition}{$A,i,j$}\newline
+    \Comment{$A$ is an array of $N$ integers, $A[1..N]$}\newline
+    \Comment{$i$ and $j$ are the start and end of subarray}
+    \State $x\gets A[i]$
+    \State $y\gets i-1$
+    \State $z\gets j+1$
+    \While{($true$)}
+      \State $z\gets z-1$
+      \While{$A[z]>x$}
+        \State $z\gets z-1$
+      \EndWhile
+      \State $y\gets y+1$
+      \While{$A[y]<x$}
+        \State $y\gets y+1$
+      \EndWhile
+      \If{$y<z$}
+        \State Swap $A[y]\leftrightarrow A[z]$
+      \Else
+        \State return $z$
+      \EndIf
+    \EndWhile
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+\noindent\\
+\bold{Conquer:}Recursively invoke \cour{Quicksort} on the two subarrays. This procedure conquers the complexity by applying the same operations in two subarrays\medskip.\newline
+\bold{Merge:} Quicksort does not require merge or combine operation as the entire array $A[i..j]$ is sorted in place.\newline
+\indent In the heart of \cour{Quicksort}, there is a partition procedure as shown in Algorithm 1. A pivot element $x$ is selected. The first inner while loop (line \#6) continues examining elements until it finds an element that is smaller than or equal to the pivot element. Similarly, the second inner while loop (line \#9) continues examining elements until it finds an element that is greater than or equal to the pivot element. If indices $y$ and $z$ have not exchanged their side around the pivot, the elements at $A[y]$ and $A[z]$ are exchanged. Otherwise, the procedure returns the index $z$, such that all elements to the left of $z$ are smaller than or equal to $A[z]$ and all elements to the right of $z$ are greater than or equal to $A[z]$.\newline
+\indent The main recursive procedure for \cour{Quicksort} is
+\begin{algorithm}
+  \caption{\cour{Quicksort} recursion.}
+  \label{algo:quicksort}
+  \begin{algorithmic}[1]
+    \Procedure{Quicksort}{$A,i,j$}\newline
+    \Comment{Quicksort procedure called with $A,1,N$}
+    \If{$i<j$}
+      \State $k\gets\smca{Partition}(A,i,j)$
+      \State $\smca{Quicksort}(A,i,k)$
+      \State $\smca{Quicksort}(A,k+1,j)$
+    \EndIf
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+\noindent\newline presented in Algorithm 2. Initial invocation is performed by call QUICKSORT$(A,1,N)$ where $N$ is the length of array $N$.
+\subsection{Time complexity analysis of \cour{Quicksort}}
+The worst case of \cour{Quicksort} occurs when an array of length $N$, gets partitioned into two subarrays of size N-1 and 1 in every recursive invocation of QUICKSORT procedure in Algorithm 2. The partitioning procedure presented in Algorithm 1, takes $\Theta(n)$ time, the recurrence relation for running time is, $$T(n) = T(n-1) + \Theta(n)$$
+As it is evident that $T(1) = \Theta(1)$, the recurrence is solved as follows,
+\begin{align*}
+  T(n) &= T(n-1) + \Theta(n) \\
+  &=\sum_{k=1}^{n}\Theta(k) \\
+  &= \Theta\left(\sum_{k=1}^{n}k\right) \\
+  &=\Theta(n^2)
+\end{align*}
+\indent Therefore, if the partitioning is always maximally unbalanced, the running time is $\Theta(n^2)$. Intutively, if an input sequence is almost sorted, \cour{Quicksort} will perform poorly. In the best case, partitioning divides the array into two equal parts. Thus, the recurrence for the best case is given by, $$T(n) = 2T\left(\frac{n}{2}\right)+\Theta(n)$$
+which evaluates to $\Theta(n\:$log$_2\:n)$. Using a comparatively involved analysis, the average running time of \cour{Quicksort} can be determined to be $O(n\:$lg$\:n)$.
+\section{Lower bounds on comparison sorts}
+An interesting question about sorting algorithms based on comparisons is the following: What is the lower bound of this class of sorting algorithms? This question is important for algorithm researchers to further improve the sorting algorithms.\newline
+\indent A decision tree based analysis leads to the following theorem~\cite{cormen}.
+\begin{theorem}
+  Any decision tree that sorts n elements has height $\Omega(n\:$\emph{log}$_2\:(n)$.
+\end{theorem}
+\begin{proof}
+  Consider a decision tree of height $h$ that sorts $n$ elements. Since there are $n!$ permutations of $n$ elements, each permutation representing a distinct sorted order, the tree must have at least $n!$ leaves. Since a binary tree of height $h$ has no more than $2^h$ leaves. So,
+  \begin{flalign*}
+  \:\:\:n!\leq 2^h&&
+  \end{flalign*}
+  Applying logarithmic (log$_2$), the inequality becomes,
+  \begin{flalign*}
+    h\geq\:\emph{lg}\:(n!).&&
+\end{flalign*}
+  Applying Stirling's approximations,
+  \begin{flalign*}
+  n!>\left(\frac{n}{e}\right)^n,&&
+\end{flalign*}
+  where $e$ is natural base of logarithms. Further,
+  \begin{align*}
+    h &\geq \emph{lg}\left(\frac{n}{e}\right)^n \\
+    &=n\:\emph{lg}\:n - n\:\emph{lg}\:e \\
+    &=\Omega(n\:\emph{lg}\:n)
+  \end{align*}
+\end{proof}
+
+\section{Conclusion} 
+In this document, we have provided a discussion on sorting algorithms. We included algorithms for \cour{Quicksort} and explained its working. Further, a proof of lower bounds on sorting is presented in this document. Most of the content presented here is created by referring and reproducing contents from one of the widely followed book on Algorithms by Cormen et al.~\cite{cormen}. We do not claim originality of this work. This document is prepared as part of an assignment for the Software Lab Course (CS251) to learn \LaTeX.
+
+\begin{thebibliography}{25}
+\bibitem{cormen}
+\smca{Cormen, T. H., Leiserson, C. E., Rivest, R. L., and Stein, C.} \ital{Interoduction to Algorithms, Third Edition}, 3rd ed. The MIT Press, 2009.
+\bibitem{hoare}
+\smca{Hoare, C. A. R. }Algorithm 64: Quicksort. \ital{Communications of ACM 4}, 7 (1961), 321-.
+\bibitem{martin}
+\smca{Martin, W. A.} ~Sorting. \ital{ACM Computing Survey 3,} 4 (1971), 147\ital{-}174.
+\bibitem{roy}
+\smca{Roy, S., Rudra, A., and Verma, A.} An energy complexity model for algorithms. In \ital{Proceedings of the 4th Conference on Innovations in Theoretical Computer Science} (2013), ITCS '13, pp. 283$-$304.
+\end{thebibliography}
+
+\end{document}

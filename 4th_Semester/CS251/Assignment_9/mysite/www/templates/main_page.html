@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Let's Build Stuff</title>
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <header>
+        <h2>Let's Build Stuff</h2>
+        <a href="../allreg.php">All registrations</a>
+    </header>
+    <div class="container">
+        <form action="index.php" method="post" id="form" onsubmit="return validate_all('results');">
+            <table cellspacing="10">
+                <tr><td>Name</td><td><input type="text" name="name" maxlength="20" id="name" onKeyUp="updatelength('name', 'name_length')"><br /><div id="name_length"></div> </td></tr>
+                <tr><td>Address</td><td><input type="text" name="address" maxlength="100" id="address" onKeyUp="updatelength('address', 'address_length')"><br /><div id="address_length"></div> </td></tr>
+                <tr><td>Email</td><td><input type="text" name="email"  id="email" ><br /></td></tr>
+                <tr><td>Mobile</td><td><input type="text" name="mobile"  id="mobile" ><br /></td></tr>
+                <tr><td>Bank</td><td><input type="text" name="bank"  id="bank" ><br /></td></tr>
+                <tr><td>Password</td><td><input type="password" name="password" maxlength="20" id="password" onKeyUp="updatelength('password', 'pass_length')"><div id="pass_result"></div><br /><div id="pass_length"></div></td></tr>
+                <tr><td colspan="2"><input type="submit" name="submit" value="Register"></td></tr>
+            </table>
+            <h3 id="results"></h3>
+        </form>
+    </div>
+</body>
+</html>

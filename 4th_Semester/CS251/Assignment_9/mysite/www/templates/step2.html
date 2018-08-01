@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Let's Build Stuff</title>
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <header>
+        <h2>Let's Build Stuff</h2>
+    </header>
+    <div class="container">
+        <h2>{errors}</h2>
+        <form action="index.php" method="post">
+            <table cellspacing="10">
+                <input  type="hidden" name="login" value="{login}">
+                <input  type="hidden"name="pass" value="{pass}">
+                <input  type="hidden"name="email" value="{email}">
+                <input  type="hidden"name="bank" value="{bank}">
+                <input  type="hidden"name="mobile" value="{mobile}">
+            </table>
+        </form>
+    </div>
+<a href="index.php">Another Registration</a>
+</body>
+</html>
+

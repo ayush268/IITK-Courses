@@ -1,0 +1,82 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[sfdefault]{roboto}
+\usepackage{graphicx}
+
+\let\bold\textbf
+\let\ital\textit
+\let\smca\smallcaps
+
+\begin{document}
+\section*{Scatter Plots}
+\begin{figure}[!htb]
+    \centering
+    \includegraphics{thread_1_scatter}
+    \label{scatter1}
+\end{figure}
+This plot shows Execution time when executing using just \bold{one thread} and the time should increase as number of elements increases which is evident from the plot.
+
+\newpage
+\begin{figure}[!htb]
+    \centering
+    \includegraphics{thread_2_scatter}
+    \label{scatter2}
+\end{figure}
+This plot shows Execution time when executing using \bold{two threads} and the time here is roughly half the value we got from executing on one thread.
+
+\newpage
+\begin{figure}[!htb]
+    \centering
+    \includegraphics{thread_4_scatter}
+    \label{scatter4}
+\end{figure}
+This plot shows Execution time when executing using \bold{four threads} and the time here is roughly half the value we got from executing on two threads unless you have \bold{less than 4 cores} on your machine.
+
+\newpage
+\begin{figure}[!htb]
+    \centering
+    \includegraphics{thread_8_scatter}
+    \label{scatter8}
+\end{figure}
+This plot shows Execution time when executing using \bold{eight threads} and the time here is halved one more time if we have \bold{greater than or equal to 8 cores} or it roughly remains the same.
+
+\newpage
+\begin{figure}[!htb]
+    \centering
+    \includegraphics{thread_16_scatter}
+    \label{scatter16}
+\end{figure}
+This plot shows Execution time when executing using \bold{sixteen threads} and the time here is halved or roughly remains same.
+
+\newpage
+\section*{Line Plot}
+\begin{figure}[!htb]
+    \centering
+    \includegraphics{thread_lineplot}
+    \label{lineplot}
+\end{figure}
+This plot shows Average Execution for each thread count for certain number of elements. \newline
+For low value of number of elements the time on increasing the thread count is unpredictable but usually increases. \newline
+For high value of number of elements the time on increasing the thread count decreases till CPU core count becomes the bottleneck.
+
+\newpage
+\section*{Speedup Bar Plot}
+\begin{figure}[!htb]
+    \centering
+    \includegraphics{thread_speedup}
+    \label{speedup}
+\end{figure}
+This plot shows the average speedup values for different thread count for different number of elements. \newline
+The values are averaged over the 100 samples for each thread count and number of elements.
+
+\newpage
+\section*{Error Bar Plot}
+\begin{figure}[!htb]
+    \centering
+    \includegraphics{thread_errorbars}
+    \label{errorbars}
+\end{figure}
+This plot shows the standard deviation from the mean (average) values for different thread count for different number of elements.
+\end{document}
+

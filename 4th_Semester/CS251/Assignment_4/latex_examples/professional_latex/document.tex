@@ -1,0 +1,32 @@
+%\documentclass[a4paper, 10pt]{article}
+\documentclass[a4paper, 10pt,twocolumn]{article}
+
+
+\usepackage{lipsum,lineno}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyperref}
+\usepackage{url}
+
+\title{Modular Latex Document Preparation}
+\author{Debadatta Mishra, IIT Kanpur}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+\input{abstract.tex}
+\end{abstract}    
+
+
+\input{introduction.tex}
+\input{motivation.tex}
+\input{design.tex}
+\input{evaluation.tex}
+\input{conclusion.tex}
+
+\bibliographystyle{acm}
+\bibliography{document}
+\end{document}

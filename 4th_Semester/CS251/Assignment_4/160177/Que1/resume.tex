@@ -1,0 +1,145 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[sfdefault]{roboto}
+\usepackage[T1]{fontenc}
+\usepackage[left=0.75in,top=0.4in,right=0.75in,bottom=0.6in]{geometry}
+\usepackage{array}
+\usepackage{tabu}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{lightgrey}{HTML}{95A5A6}
+\definecolor{grey}{rgb}{0.25,0.25,0.25}
+\newcommand{\blackb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\lightgreyb}{\color{lightgrey} \usefont{OT1}{lmss}{m}{n}}
+
+\let\bold\textbf
+\let\ital\textit
+\let\smca\textsc
+\let\cour\texttt
+
+\renewcommand{\rmdefault}{Roboto}
+
+%\setfont{subsection}{\usefont{T1}{fvm}{m}{n}}
+%\setfont{section}{\usefont{T1}{fvs}{b}{n}\Large}
+
+%\headerfont{Roboto}
+%\headerfont[
+%  UprightFont=*-Regular,
+%  ItalicFont=*-Italic,
+%  BoldFont=*-Bold,
+%  BoldItalicFont=*-BoldItalic,
+%]{Roboto}
+
+
+\begin{document}
+\pagenumbering{gobble}
+\begin{center}
+  {\fontsize{33}{60}\selectfont {\fontseries{t}\selectfont Ayush} \bold{Bansal}} \\
+  {\scriptsize {\color{lightgrey}\smca{Second Year Undergraduate $\cdot$ Computer Science and Engineering}}} \\
+  {\footnotesize \ital{\color{lightgrey}Indian Institute of Technology}} \\
+  {\scriptsize (+91) 94625-45882 $\mid$ ayushb268@gmail.com}
+\end{center}
+\rule{\textwidth}{2pt}\vspace{0.2cm}
+I am enthusiastic about \bold{Systems} and learning new stuff about \ital{Linux architecture, Programming languages, networking} and \ital{security}. I have experience with cloud computing, ethical hacking and participate in \bold{CTFs} in my free time. I want to pursue a career in research and do a significant contribution in the field of \bold{Computer Science}. \\
+\rule{\textwidth}{2pt}
+\section*{{\fontseries{t}\selectfont Edu}cation\color{gray}\hrulefill}
+
+\begin{tabu} to \textwidth {| c | l | X[c] | r |}
+  \hline
+  \bold{Year} & \bold{Degree} & \bold{Institution(Board)} & \bold{CGPA/\%} \\
+  \hline
+  July'16 -- Present & B.Tech, CSE & Indian Institute of Technology, Kanpur & 8.5/10.0 \\
+  2016 & CBSE -- XII & Saint Josephs School, Kota (CBSE) & 95\% \\
+  2014 & CBSE -- X & Saint Pauls School, Kota (CBSE) & 94\%\\
+  \hline
+\end{tabu}
+
+\section*{{\fontseries{t}\selectfont Hon}ors \& Awards\color{gray}\hrulefill}
+
+\begin{tabu} to \textwidth {c X[l] r}
+  2016 & \bold{All India Rank 187}, Joint Entrance Exam Advanced, 200,000 candidates & {\footnotesize\fontseries{t}\selectfont\ital{India}} \\
+  2016 & \bold{All India Rank 571}, Joint Entrance Exam Mains, 1.5 million candidates & {\footnotesize\fontseries{t}\selectfont\ital{India}} \\
+  2016 & \bold{All India Rank 52}, KVPY Scholarship, Indian Institute of Science & {\footnotesize\fontseries{t}\selectfont\ital{Bangalore,India}} \\
+  2015 & \bold{Merit Certificate, National Top 1\%}, Indian National Chemistry Olympiad & {\footnotesize\fontseries{t}\selectfont\ital{India}} \\
+  2015 & \bold{Merit Certificate, National Top 1\%}, Indian National Astronomy Olympiad & {\footnotesize\fontseries{t}\selectfont\ital{India}}
+\end{tabu}
+
+\section*{{\fontseries{t}\selectfont Wor}k Experience\color{gray}\hrulefill}
+
+\begin{tabu} to \textwidth {l X[r]}
+  \bold{New York Office, IIT Kanpur} & {\scriptsize\fontseries{t}\selectfont\ital{IIT Kanpur}} \\
+  {\footnotesize\color{lightgrey}\smca{Infrastructure Management, Supervisor Prof. Manindra Agarwal}} & {\scriptsize\fontseries{t}\selectfont\ital{May 2017 - Present}} 
+\end{tabu}
+{\footnotesize\fontseries{t}\selectfont\begin{itemize} % Description(s) of tasks/responsibilities
+        \item {Worked on a scalable microservice based web application with an extensive technology stack.}
+        \item {Deployed microservices utilizing Docker container, Coreos Container Linux, JenkinsCI, and have maintained the cluster on Kubernetes.}
+        \item {Configured and deployed Persistent Volume Storage System.}
+        \item {Technologies used: Kubernetes, Scala with Akka, Docker, Nginx, Coreos Applications, Rook with Cephfs, Heketi with Glusterfs.}
+        \item {Summer Internship continued as a volunteer and peer mentor.}
+\end{itemize}}
+
+\section*{{\fontseries{t}\selectfont Pro}jects\color{gray}\hrulefill}
+
+\begin{tabu} to \textwidth {l X[r]}
+  \bold{Implementation of Dynamic Multi-Level Paging} & {\scriptsize\fontseries{t}\selectfont\ital{IIT Kanpur}} \\
+  {\footnotesize\color{lightgrey}\smca{Advisor Prof. Debadutta Mishra}} & {\scriptsize\fontseries{t}\selectfont\ital{Oct. 2017 - Present}} 
+\end{tabu}
+{\footnotesize\fontseries{t}\selectfont\begin{itemize} % Description(s) of tasks/responsibilities
+        \item {Improve performance by creating a better \textbf{Virtual Address} organization.}
+        \item {Find wastage (internal fragmentation) in page-table pages by studying the page table usage of different applications.}
+        \item {Results gathered from application's page-table usage are used to create a better page-table organization.}
+
+\end{itemize}}
+\newpage
+\noindent\begin{tabu} to \textwidth {l X[r]}
+  \bold{Ethical Hacking: Learnt Basic Exploits for participating in CTFs} & {\scriptsize\fontseries{t}\selectfont\ital{IIT Kanpur}} \\
+  {\footnotesize\color{lightgrey}\smca{Programming Club}} & {\scriptsize\fontseries{t}\selectfont\ital{Summer'2017}} 
+\end{tabu}
+{\footnotesize\fontseries{t}\selectfont\begin{itemize} % Description(s) of tasks/responsibilities
+        \item {Learnt exploitation techniques like buffer-overflow, integer-overflow, format strings and heap exploits.}
+        \item {Used debuggers and knowledge of x86 Assembly language to exploit binary files.}
+        \item {Performed various web attacks like sql-injection, XSS and CSRF.}
+        \item {Learnt basics of Cryptography.}
+\end{itemize}}
+
+\noindent\newline\begin{tabu} to \textwidth {l X[r]}
+  \bold{Linux From Scratch: Compiled Linux System from Source and Built a Package Manager} & {\scriptsize\fontseries{t}\selectfont\ital{IIT Kanpur}} \\
+  {\footnotesize\color{lightgrey}\smca{Association of Computing Activities}} & {\scriptsize\fontseries{t}\selectfont\ital{Feb. - Apr. 2017}} 
+\end{tabu}
+{\footnotesize\fontseries{t}\selectfont\begin{itemize} % Description(s) of tasks/responsibilities
+        \item {Created a \textbf{Customized Linux} based operating system by compiling all packages from scratch using the host machine's kernel.}
+        \item {Built a \textbf{package manager} in python which fetched the dependencies of packages and created a dependency list based on packages installed.}
+\end{itemize}}
+
+\section*{{\fontseries{t}\selectfont Rel}evant Coursework\color{gray}\hrulefill}
+
+\hspace{-2.55mm}{\fontsize{11pt}{1.5em}
+  \begin{tabular*}{\textwidth}{l l l}
+    Introduction to Programming  & Discrete Mathematics & Logic in Computer Science \\
+    Abstract Algebra (A$*$) & Data Structures and Algorithms ($i$) & Computer Organization ($i$) \\
+    Programming Tools and Techniques ($i$) \\
+\end{tabular*}
+
+\vspace{2mm}
+\hspace{-7.4mm}\begin{tabular}{l l}
+  {\footnotesize\color{lightgrey}A$*$: Grade for Exceptional Performance} & {\footnotesize\color{lightgrey}$i$: In progress}
+\end{tabular}
+}
+
+\section*{{\fontseries{t}\selectfont Ski}lls\color{gray}\hrulefill}
+
+\begin{tabular} {r l}
+  \bold{Languages} & C/C++, Bash, Python, Scala, Golang, Javascript \\
+  \bold{Utilities} & Linux shell utilities, Git, Docker, Kubernetes, Akka with Scala, GDB, \LaTeX, Vim \\
+  \bold{Operating Systems} & Arch Linux, Ubuntu \\
+\end{tabular}
+
+\section*{{\fontseries{t}\selectfont Ext}racurricular Activity\color{gray}\hrulefill}
+
+\begin{tabu} to \textwidth {l X[r]}
+  \bold{Leader} {\footnotesize\smca{Google's Developer Students Club, IIT Kanpur}} & {\scriptsize\fontseries{t}\selectfont\ital{July 2017 - Present}} \\
+  \bold{Secretary} {\footnotesize\smca{Programming Club, IIT Kanpur}} & {\scriptsize\fontseries{t}\selectfont\ital{Apr. 2017 - Present}} \\
+\end{tabu}
+
+\end{document}

@@ -1,0 +1,27 @@
+\documentclass{article} 
+\usepackage{lipsum}
+\usepackage[left=0.75in,top=0.6in,right=0.75in,bottom=0.6in]{geometry}
+
+\begin{document}
+
+\hrule
+\vspace{0.1cm}
+\hrule
+
+\vspace{1cm}
+\noindent
+\lipsum[5]
+
+\vspace{3cm}
+\noindent
+I am a text at blah \hfill out of the blue
+
+\vspace{1cm}
+\noindent \fbox{
+    \parbox{\textwidth}{
+            \lipsum[3]
+    }
+}
+
+\hspace{5cm} I am starting at a horizontal offset!
+\end{document}

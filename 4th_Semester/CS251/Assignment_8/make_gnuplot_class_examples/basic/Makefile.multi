@@ -1,0 +1,27 @@
+all: exe lib
+exe:cs251.ex1
+lib:cs251.a
+
+CC=gcc
+CFLAGS= -g -I. -DDBG
+MAKELIB=ar
+RANLIB=ranlib
+
+OBJS = graphics.o math.o io.o main.o
+LIBOBJS = graphics.o math.o io.o
+
+cs251.ex1:$(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS)
+
+$(OBJS) : common.h
+graphics.o : math.o
+%.o: %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
+cs251.a:$(LIBOBJS)
+	$(MAKELIB) rc $@ $(LIBOBJS)
+	$(RANLIB) $@
+
+.Phony : clean all exe lib
+clean:
+	rm -f *.o cs251.ex1 cs251.a	

@@ -1,0 +1,59 @@
+OUTPUT for file one-uni.txt
+
+Connection (A=192.168.122.239:9801 B=192.168.122.1:60343)
+
+A-->B  #packets=358, #datapackets=0, #bytes=0, #retrans=0 xput=0 bytes/sec
+
+B->A #packets=366, #datapackets=362, #bytes=1048600, #retrans=0 xput=975343 bytes/sec
+
+OUTPUT for file bidirection-multi.txt
+
+Connection (A=192.168.122.1:60368 B=192.168.122.239:9801)
+
+A-->B #packets=3752, #datapackets=3749, #bytes=10485784, #retrans=0 xput=825226 bytes/sec
+
+B-->A #packets=3714, #datapackets=0, #bytes=0, #retrans=0 xput=0 bytes/sec
+
+Connection (A=192.168.122.1:60367 B=192.168.122.239:9801)
+
+A-->B #packets=3755, #datapackets=3751, #bytes=10485784, #retrans=0 xput=1747910 bytes/sec
+
+B-->A #packets=3694, #datapackets=0, #bytes=0, #retrans=0 xput=0 bytes/sec
+
+Connection (A=192.168.122.239:42482  B=172.27.17.201:7656)
+
+A-->B #packets=131, #datapackets=127, #bytes=4998632, #retrans=0 xput=241596520 bytes/sec
+
+B-->A #packets=176, #datapackets=0, #bytes=0, #retrans=0 xput=0 bytes/sec
+
+Connection (A=172.27.17.201:7656  B=192.168.122.239:42480)
+
+A-->B #packets=158, #datapackets=0, #bytes=0, #retrans=0 xput=0 bytes/sec
+
+B-->A #packets=124, #datapackets=120, #bytes=4492000, #retrans=0 xput=207895589 bytes/sec
+
+OUTPUT for file bidirection-multi-rexmit.txt
+
+Conncection (A= 192.168.122.1.60373 B=192.168.122.239.9801)
+
+A-->B #packets=4898, #datapackets=4895, #bytes=11568888, #retrans=1088896 xput=174205 bytes/sec
+
+B-->A #packets=4486, #datapackets=0, #bytes=0, #retrans=0 xput=0 bytes/sec
+
+Conncection (A= 192.168.122.1.60374 B=192.168.122.239.9801)
+
+A-->B #packets=4953, #datapackets=4950, #bytes=11564544, #retrans=1080208 xput=183033 bytes/sec
+
+B-->A #packets=4542, #datapackets=0, #bytes=0, #retrans=0 xput=0 bytes/sec
+
+Conncection (A=172.27.17.201:7656 B=192.168.122.239:42486)
+
+A-->B #packets=117, #datapackets=0, #bytes=0, #retrans=0 xput=0 bytes/sec
+
+B-->A #packets=98, #datapackets=94, #bytes=3724672, #retrans=0 xput=120243801 bytes/sec
+
+Conncection (A=172.27.17.201:7656 B=192.168.122.239:42484)
+
+A-->B #packets=96, #datapackets=0, #bytes=0, #retrans=0 xput=0 bytes/sec
+
+B-->A  #packets=73, #datapackets=69, #bytes=3103928, #retrans=0 xput=99930073 bytes/sec

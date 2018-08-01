@@ -1,0 +1,19 @@
+ -- Plotting scripts are in *.p files
+	- scatter.p : scatter plot of exponential samples
+        - plotcdf.p: line plot of exponential CDF from data points
+        - lineplot.p: different line plots for memory usage by applications
+        - plot_speedup.p: bar-charts and error bars 
+
+HOW TO EXECUTE
+--------------
+        
+Example:
+
+$ gnuplot plotcdf.p   
+    ---> This will create expo_cdf.eps
+  Open expo_cdf.eps using your favourite pdf viewer
+         
+NOTE
+----
+
+*Do not delete .out files, they contain required data for plots. 
