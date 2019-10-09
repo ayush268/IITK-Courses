@@ -1,0 +1,174 @@
+#include<init.h>
+#include<lib.h>
+#include<context.h>
+#include<memory.h>
+
+#define L4_MASK 39
+#define L3_MASK 30
+#define L2_MASK 21
+#define L1_MASK 12
+
+int mask[5] = { 0, L1_MASK, L2_MASK, L3_MASK, L4_MASK };
+
+int page_table_walk(u64 virtual_address, u64 pfn[], u64 *pte_address[], int level)
+{
+    u64 *current_address = (u64 *)(osmap(pfn[level]));
+    current_address += ((virtual_address >> mask[level]) & (0x1FF));
+    if(current_address == pte_address[level])
+        return 1;
+    pte_address[level] = current_address;
+    if(!(*pte_address[level] & (0x1)))
+        return 0;
+    else
+    {
+        pfn[level-1] = *pte_address[level] >> 12;
+        return 1;
+    }
+}
+
+int check_address(u64 virtual_address, u32 cr3_value)
+{
+    u32 pfn = cr3_value, iterator = 0;
+    u64 *pte_address;
+    for(iterator = 4; iterator > 0; iterator--)
+    {
+        pte_address = (u64 *)(osmap(pfn));
+        pte_address += ((virtual_address >> mask[iterator]) & (0x1FF));
+        if(!(*pte_address & (0x1)))
+            return 0;
+        pfn = *pte_address >> 12;
+    }
+    return 1;
+}
+
+u64 expand_segment(u64 size, struct mm_segment *segment)
+{
+    u64 end = segment->end, next_free = segment->next_free, iterator = 0, original_next_free = segment->next_free;
+    next_free += (size * PAGE_SIZE);
+    if(next_free > end)
+        return 0;
+    segment->next_free = next_free;
+    return original_next_free;
+}
+
+u64 shrink_segment(u64 size, u32 cr3_value, struct mm_segment *segment)
+{
+    u64 start = segment->start, next_free = segment->next_free, iterator = 0, pfn[5], *pte_address[5], virtual_address;
+    if((next_free - (size * PAGE_SIZE)) < start)
+        return 0;
+    pfn[4] = cr3_value;
+    for(iterator = 0; iterator < size; iterator++)
+    {
+        next_free -= PAGE_SIZE;
+        virtual_address = next_free;
+        if(page_table_walk(virtual_address, pfn, pte_address, 4) && page_table_walk(virtual_address, pfn, pte_address, 3) && page_table_walk(virtual_address, pfn, pte_address, 2) && page_table_walk(virtual_address, pfn, pte_address, 1))
+        {
+            os_pfn_free(USER_REG, pfn[0]);
+            *pte_address[1] &= ~(1UL);
+        }
+    }
+    return next_free;
+}
+
+/*System Call handler*/
+u64 do_syscall(int syscall, u64 param1, u64 param2, u64 param3, u64 param4)
+{
+    struct exec_context *current = get_current_ctx();
+    printf("[GemOS] System call invoked. syscall no  = %d\n", syscall);
+    switch(syscall)
+    {
+          case SYSCALL_EXIT:
+                              printf("[GemOS] exit code = %d\n", (int) param1);
+                              do_exit();
+                              break;
+          case SYSCALL_GETPID:
+                              printf("[GemOS] getpid called for process %s, with pid = %d\n", current->name, current->id);
+                              return current->id;      
+          case SYSCALL_WRITE:
+                             {
+                                 u64 virtual_address = param1, length = param2, iterator = 0, end_virtual_address = virtual_address+(length-1);
+                                 if(length > 1024)
+                                 {
+                                     printf("The length is limited to 1024\n");
+                                     do_exit();
+                                 }
+                                 if(check_address(virtual_address, current->pgd) && ((virtual_address >> PAGE_SHIFT == end_virtual_address >> PAGE_SHIFT) || check_address(end_virtual_address, current->pgd)))
+                                 {
+                                    char *buf_address = virtual_address;
+                                    for(iterator = 0; iterator < length; iterator++)
+                                        printf("%c",*(buf_address + iterator));
+                                    return iterator;
+                                 }
+                                 else
+                                     return -1;
+                             }
+          case SYSCALL_EXPAND:
+                             {
+                                 u64 size = param1, flag = param2, iterator = 0, expanded_address;
+                                 if(size > 512)
+                                 {
+                                     printf("The maximum value of size can be 512\n");
+                                     do_exit();
+                                 }
+                                 if(flag != MAP_WR && flag != MAP_RD)
+                                     return 0;
+                                 expanded_address = (flag == MAP_RD) ? expand_segment(size, &current->mms[MM_SEG_RODATA]) : expand_segment(size, &current->mms[MM_SEG_DATA]);
+                                 return expanded_address;
+                             }
+          case SYSCALL_SHRINK:
+                             {
+                                 u64 size = param1, flag = param2, iterator = 0, shrinked_address;
+                                 if(flag != MAP_WR && flag != MAP_RD)
+                                     return 0;
+                                 shrinked_address = (flag == MAP_RD) ? shrink_segment(size, current->pgd, &current->mms[MM_SEG_RODATA]) : shrink_segment(size, current->pgd, &current->mms[MM_SEG_DATA]);
+                                 return shrinked_address;
+                             }
+          default:
+                              return -1;
+                                
+    }
+    return 0;   /*GCC shut up!*/
+}
+
+extern int handle_div_by_zero(void)
+{
+	u64 rip;
+    asm volatile("mov 8(%%rbp), %0;" : "=r" (rip));
+    printf("Div-by-zero detected at %x\n", rip);
+    do_exit();
+    return 0;  /*GCC shut up!*/
+}
+
+extern int handle_page_fault(void)
+{
+    u64 rsp_value, rbp_value, val1;
+    asm volatile("mov %%rbp, %0;" : "=r" (rbp_value));
+    printf("RBP = %x\n", rbp_value);
+    asm volatile("mov %%rsp, %0;" : "=r" (rsp_value));
+    printf("RSP = %x\n", rsp_value);
+    //asm volatile("mov (%%rsp), %0;" : "=r" (val1));
+    //printf("Value 1 = %x\n", val1);
+    //asm volatile("mov 8(%%rsp), %0;" : "=r" (val1));
+    //printf("Value 2 = %x\n", val1);
+    //asm volatile("mov 16(%%rsp), %0;" : "=r" (val1));
+    //printf("Value 3 = %x\n", val1);
+    //asm volatile("mov 24(%%rsp), %0;" : "=r" (val1));
+    //printf("Value 4 = %x\n", val1);
+    asm volatile("push %%rax; \
+                  push %%rbx; \
+                  push %%rcx; \
+                  push %%rdx; \
+                  push %%rsi; \
+                  push %%rdi; \
+                  push %%r8;  \
+                  push %%r9;  \
+                  push %%r10; \
+                  push %%r11; \
+                  push %%r12; \
+                  push %%r13; \
+                  push %%r14; \
+                  push %%r15;" : );
+    asm volatile("mov %%rdi, %0;" : "=r" (val1));
+    printf("Value 1 = %x\n", val1);
+    return 0;   /*GCC shut up!*/
+}
