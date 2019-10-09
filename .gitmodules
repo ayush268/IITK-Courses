@@ -1,0 +1,6 @@
+[submodule "4th_Semester/CS220/4th_Semester/CS220/CS220Labs"]
+	path = 4th_Semester/CS220/4th_Semester/CS220/CS220Labs
+	url = git@github.com:raghukul01/FPGA_Programs.git
+[submodule "4th_Semester/CS220/CS220Labs"]
+	path = 4th_Semester/CS220/CS220Labs
+	url = git@github.com:raghukul01/FPGA_Programs.git

@@ -1,7 +1,8 @@
 FROM ubuntu:latest
 # Install apache, PHP, and supplimentary programs. openssh-server, curl. 
+RUN apt-get update && apt-get -y install software-properties-common && add-apt-repository ppa:ondrej/php
 RUN apt-get update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    apache2 php7.0 php7.0-mysql php-sqlite3 sqlite3 libsqlite3-dev libapache2-mod-php7.0 curl lynx-cur
+    apache2 php7.0 php7.0-mysql php-sqlite3 sqlite3 libsqlite3-dev libapache2-mod-php7.0 curl
 
 # Enable apache mods.
 RUN a2enmod php7.0
